@@ -41,6 +41,7 @@ public class CornerPane extends StackPane {
         ImageView imageView = new ImageView(String.valueOf(JavaFXMonopolyApplication.class.getResource(path)));
         return imageView;
     }
+
 }
 
 

@@ -1,10 +1,10 @@
 package hr.algebra.javafxmonopoly;
 
+import hr.algebra.javafxmonopoly.controllers.StatsPanelController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -13,13 +13,16 @@ public class JavaFXMonopolyApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+        GameStateManager manager = new GameStateManager();
+
         GameBoard gameBoard = new GameBoard();
-        GameController gameController = new GameController(gameBoard);
+        GameBoardController gameController = new GameBoardController(gameBoard, manager);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(gameBoard);
 
         FXMLLoader fxmlLoader = new FXMLLoader(JavaFXMonopolyApplication.class.getResource("views/stats-panel.fxml"));
+        fxmlLoader.setController(new StatsPanelController(manager));
         borderPane.setRight(fxmlLoader.load());
 
         Scene scene = new Scene(borderPane, 1400, 800);
@@ -27,7 +30,6 @@ public class JavaFXMonopolyApplication extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-
     }
 
     public static void main(String[] args) {
