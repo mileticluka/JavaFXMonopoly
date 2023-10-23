@@ -1,26 +1,65 @@
-package hr.algebra.javafxmonopoly;
+package hr.algebra.javafxmonopoly.models;
 
+import hr.algebra.javafxmonopoly.enums.GamePane;
+import hr.algebra.javafxmonopoly.enums.Group;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 
-public class PropertyPane extends StackPane {
+public class PropertyPane extends GamePane {
 
-    private String propertyName;
-    private int price;
-    private Group group;
+    private final int price;
+
+    private final Label nameLabel;
+    private final Label priceLabel;
+
+    private Boolean bought = false;
+
+    private Player owner;
+
+    public String getName()
+    {
+        return nameLabel.getText();
+    }
+
+    public int getPrice()
+    {
+        return this.price;
+    }
+
+    public void setBought(Player p)
+    {
+
+        if(this.owner == null)
+        {
+            this.owner = p;
+            this.priceLabel.setText("Owned By: Player " + p.getId());
+            p.addTitleDeed(this);
+            this.bought = true;
+            p.setMoney(p.getMoney()-this.price);
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Alert");
+            alert.setHeaderText("Cannot Buy Property!");
+            alert.setContentText("Property is already owned!");
+            alert.showAndWait();
+        }
+
+
+
+    }
 
     public PropertyPane(String propertyName, int price, Group group) {
-        this.propertyName = propertyName;
         this.price = price;
-        this.group = group;
 
         this.setHeight(112);
         this.setWidth(64);
 
-        switch (this.group) {
+        switch (group) {
             case BROWN:
                 this.setStyle("-fx-background-color: #855100; -fx-border-color: rgba(58,58,58,0.52); -fx-border-width: 1");
                 break;
@@ -57,8 +96,8 @@ public class PropertyPane extends StackPane {
         }
 
         // Create labels for displaying information
-        Label nameLabel = new Label(propertyName);
-        Label priceLabel = new Label("Price: $" + price);
+        nameLabel = new Label(propertyName);
+        priceLabel = new Label("Price: $" + price);
 
         // Set label styles
         nameLabel.setStyle("-fx-font-size: 10; -fx-font-weight: bold;");
@@ -82,17 +121,15 @@ public class PropertyPane extends StackPane {
         // Center align labels within the stack pane
         setAlignment(Pos.CENTER);
     }
+
+    public Boolean getBought() {
+        return bought;
+    }
+
+    public Player getOwner()
+    {
+        return this.owner;
+    }
 }
 
-enum Group {
-    BROWN,
-    LIGHT_BLUE,
-    PINK,
-    ORANGE,
-    RED,
-    YELLOW,
-    GREEN,
-    BLUE,
-    AIRPORT,
-    COMPANY
-}
+

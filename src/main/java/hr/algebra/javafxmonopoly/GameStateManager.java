@@ -1,11 +1,15 @@
 package hr.algebra.javafxmonopoly;
 
+import hr.algebra.javafxmonopoly.enums.GamePane;
+import hr.algebra.javafxmonopoly.models.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameStateManager {
 
-    private List<Player> players;
+    private final List<Player> players;
+    private List<GamePane> gamePanes;
     private int currentPlayerIndex;
 
     public GameStateManager() {
@@ -20,6 +24,11 @@ public class GameStateManager {
         currentPlayerIndex = 0;
     }
 
+    public void setGamePanes(List<GamePane> gamePanes)
+    {
+        this.gamePanes = gamePanes;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -30,5 +39,9 @@ public class GameStateManager {
 
     public void nextPlayerTurn() {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    }
+
+    public List<GamePane> getGamePanes() {
+        return gamePanes;
     }
 }

@@ -1,5 +1,6 @@
 package hr.algebra.javafxmonopoly;
 
+import hr.algebra.javafxmonopoly.controllers.GameBoardController;
 import hr.algebra.javafxmonopoly.controllers.StatsPanelController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

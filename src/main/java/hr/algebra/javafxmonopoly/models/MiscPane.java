@@ -1,20 +1,17 @@
-package hr.algebra.javafxmonopoly;
+package hr.algebra.javafxmonopoly.models;
 
+import hr.algebra.javafxmonopoly.enums.GamePane;
+import hr.algebra.javafxmonopoly.enums.Type;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 
-public class MiscPane extends StackPane {
+public class MiscPane extends GamePane {
 
-    private String miscName;
-    private Type type;
     private String info;
 
     public MiscPane(String miscName, Type type, String info) {
-        this.miscName = miscName;
-        this.type = type;
 
         this.setHeight(112);
         this.setWidth(64);
@@ -47,10 +44,4 @@ public class MiscPane extends StackPane {
         // Center align labels within the stack pane
         setAlignment(Pos.CENTER);
     }
-}
-
-enum Type {
-    COMMUNITY_CHEST,
-    CHANCE,
-    INCOME_TAX
 }

@@ -1,6 +1,7 @@
-package hr.algebra.javafxmonopoly;
+package hr.algebra.javafxmonopoly.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private int id;
@@ -13,6 +14,16 @@ public class Player {
         this.money = money;
         this.position = 0;
         this.deeds = new ArrayList<>();
+    }
+
+    public void addTitleDeed(PropertyPane propertyPane)
+    {
+        this.deeds.add(propertyPane);
+    }
+
+    public List<PropertyPane> getTitleDeeds()
+    {
+        return this.deeds;
     }
 
     public int getMoney() {
