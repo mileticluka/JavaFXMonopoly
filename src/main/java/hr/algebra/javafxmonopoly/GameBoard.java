@@ -1,7 +1,7 @@
 package hr.algebra.javafxmonopoly;
 
 import hr.algebra.javafxmonopoly.enums.CornerPaneType;
-import hr.algebra.javafxmonopoly.enums.GamePane;
+import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.enums.Group;
 import hr.algebra.javafxmonopoly.enums.Type;
 import hr.algebra.javafxmonopoly.models.CornerPane;

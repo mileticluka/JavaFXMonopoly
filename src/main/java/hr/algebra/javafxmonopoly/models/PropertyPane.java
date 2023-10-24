@@ -1,6 +1,5 @@
 package hr.algebra.javafxmonopoly.models;
 
-import hr.algebra.javafxmonopoly.enums.GamePane;
 import hr.algebra.javafxmonopoly.enums.Group;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -29,7 +28,7 @@ public class PropertyPane extends GamePane {
         return this.price;
     }
 
-    public void setBought(Player p)
+    public boolean setBought(Player p)
     {
 
         if(this.owner == null)
@@ -39,6 +38,7 @@ public class PropertyPane extends GamePane {
             p.addTitleDeed(this);
             this.bought = true;
             p.setMoney(p.getMoney()-this.price);
+            return true;
         }
         else
         {
@@ -47,10 +47,17 @@ public class PropertyPane extends GamePane {
             alert.setHeaderText("Cannot Buy Property!");
             alert.setContentText("Property is already owned!");
             alert.showAndWait();
+            return false;
         }
 
+    }
 
-
+    public void setSold(Player p)
+    {
+            this.owner = null;
+            this.priceLabel.setText("Price: $" + price);
+            p.removeTitleDeed(this);
+            this.bought = false;
     }
 
     public PropertyPane(String propertyName, int price, Group group) {

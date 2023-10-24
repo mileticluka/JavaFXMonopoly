@@ -1,6 +1,6 @@
 package hr.algebra.javafxmonopoly.controllers;
 
-import hr.algebra.javafxmonopoly.enums.GamePane;
+import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.models.Player;
 import hr.algebra.javafxmonopoly.models.PropertyPane;
@@ -19,6 +19,10 @@ public class StatsPanelController {
 
     private final GameStateManager gameStateManager;
 
+    private List<Player> players;
+
+
+    //region UI Elements Declarations...
     @FXML
     private Pane player1Pane;
 
@@ -93,13 +97,12 @@ public class StatsPanelController {
 
     private List<ListView> deedLists;
 
-    private int currentPlayerTurn = 0;
-    List<Player> players;
+    //endregion
+
 
     public StatsPanelController(GameStateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
     }
-
 
 
     @FXML
@@ -142,106 +145,149 @@ public class StatsPanelController {
         }
         player1Pane.setDisable(false);
 
-        // Set up click event for all buttons
         for (Button button : rollButtons) {
             button.setOnMouseClicked(event -> handleRollButtonClick());
         }
 
-        for (Button button : buyButtons){
+        for (Button button : buyButtons) {
             button.setOnMouseClicked(mouseEvent -> handleBuyButtonClick(button));
             button.setDisable(true);
         }
 
-        // Update money labels
         updateMoneyLabels();
     }
 
     private void handleRollButtonClick() {
 
-        Player currentPlayer = players.get(currentPlayerTurn);
-        int oldPos = currentPlayer.getPosition();
 
         int diceRoll = rollDice();
+        Player currentPlayer = players.get(gameStateManager.getCurrentPlayerTurn());
+        int oldPos = currentPlayer.getPosition();
 
-        gameStateManager.getGamePanes().get(currentPlayer.getPosition()).erasePlayer(currentPlayer.getId());
+        GamePane newGamePane = movePlayer(currentPlayer,diceRoll);
+
+        toggleBuyButton(currentPlayer,newGamePane);
+
+        //Handle Looping over start pane
+        int newPos = currentPlayer.getPosition();
+        if (oldPos > newPos) {
+            currentPlayer.setMoney(currentPlayer.getMoney() + 200);
+            gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " passed the Start and gained $200.");
+            //System.out.println("Player " + currentPlayer.getId() + " passed the Start and gained $200.");
+        }
+
+        //Handle stepping on property
+        if (newGamePane instanceof PropertyPane &&
+                ((PropertyPane) newGamePane).getBought() &&
+                !((PropertyPane) newGamePane).getOwner().equals(currentPlayer)) {
+            handlePropertyStep(currentPlayer, newGamePane);
+        }
+
+        updateMoneyLabels();
+
+        if(currentPlayer.getMoney() <= 0)
+        {
+            handleBankrupt(currentPlayer);
+        }
+
+        togglePlayerPanels(currentPlayer,diceRoll);
+    }
+
+
+    private void handleBankrupt(Player currentPlayer)
+    {
+        currentPlayer.setBankrupt();
+        deedLists.get(currentPlayer.getId()-1).getItems().clear();
+        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " Bankrupted and has been removed from the game.");
+    }
+
+    private GamePane movePlayer(Player currentPlayer, int diceRoll)
+    {
+        GamePane oldGamePane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
+        oldGamePane.erasePlayer(currentPlayer.getId());
 
         currentPlayer.setPosition((currentPlayer.getPosition() + diceRoll) % 40);
 
-        // Disable current player pane
-        panes.get(currentPlayerTurn).setDisable(true);
-
-        // Switch to the next player
-        currentPlayerTurn = (currentPlayerTurn + 1) % players.size();
-        gameStateManager.nextPlayerTurn();
-
-        // Enable next player pane
-        panes.get(currentPlayerTurn).setDisable(false);
-
-        // Update the money label and other UI elements
-        updateMoneyLabels();
-        System.out.println("Player " + currentPlayer.getId() + " rolled a " + diceRoll + ". New position: " + currentPlayer.getPosition());
-
-        gameStateManager.getGamePanes().get(currentPlayer.getPosition()).drawPlayer(currentPlayer.getId());
-
         GamePane newGamePane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
 
-        if(newGamePane instanceof PropertyPane && !((PropertyPane) newGamePane).getBought())
-        {
-            buyButtons.get(currentPlayer.getId()-1).setDisable(false);
-            placeLabels.get(currentPlayer.getId()-1).setText(((PropertyPane) newGamePane).getName());
-        }
-        else{
-            buyButtons.get(currentPlayer.getId()-1).setDisable(true);
-            placeLabels.get(currentPlayer.getId()-1).setText("");
-        }
+        newGamePane.drawPlayer(currentPlayer.getId());
+        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " rolled a " + diceRoll + ". New position: " + currentPlayer.getPosition());
 
-        int newPos = currentPlayer.getPosition();
-
-        if(oldPos > newPos)
-        {
-            currentPlayer.setMoney(currentPlayer.getMoney()+200);
-            System.out.println("Player " + currentPlayer.getId() + " passed the Start and gained $200.");
-        }
-
-
-        //Sending Money from stepping
-        if(newGamePane instanceof PropertyPane && ((PropertyPane) newGamePane).getBought() && !((PropertyPane) newGamePane).getOwner().equals(currentPlayer))
-        {
-            Player owner = (((PropertyPane) newGamePane).getOwner());
-
-
-            PropertyPane ownersPane = ((PropertyPane) newGamePane);
-
-            int toll = (int) (ownersPane.getPrice()*0.10);
-
-            owner.setMoney((int) (owner.getMoney()+toll));
-            currentPlayer.setMoney(currentPlayer.getMoney()-toll);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Alert");
-            alert.setHeaderText("Paid: " + toll);
-            alert.setContentText("Paid to: player " + owner.getId());
-            alert.showAndWait();
-        }
-
-        //TODO: ADD SOME KIND OF LOGIC FOR LOSING THE GAME
-
-        updateMoneyLabels();
-
+        return newGamePane;
     }
 
-    private void handleBuyButtonClick(Button sender){
+    private void togglePlayerPanels(Player currentPlayer, int diceRoll)
+    {
+        panes.get(gameStateManager.getCurrentPlayerTurn()).setDisable(true);
+
+        gameStateManager.nextPlayerTurn();
+
+        for(int i = 0; i < 4; i++)
+        {
+            if(i == 3)
+            {
+                gameStateManager.logger.addLog("Winner!");
+            }
+
+            if(!gameStateManager.getCurrentPlayer().playing)
+            {
+                gameStateManager.nextPlayerTurn();
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        panes.get(gameStateManager.getCurrentPlayerTurn()).setDisable(false);
+    }
+
+    private void toggleBuyButton(Player currentPlayer ,GamePane newGamePane)
+    {
+        if (newGamePane instanceof PropertyPane && !((PropertyPane) newGamePane).getBought()) {
+            buyButtons.get(currentPlayer.getId() - 1).setDisable(false);
+            placeLabels.get(currentPlayer.getId() - 1).setText(((PropertyPane) newGamePane).getName());
+        } else {
+            buyButtons.get(currentPlayer.getId() - 1).setDisable(true);
+            placeLabels.get(currentPlayer.getId() - 1).setText("");
+        }
+    }
+
+    private void handlePropertyStep(Player currentPlayer,GamePane newGamePane) {
+        Player owner = (((PropertyPane) newGamePane).getOwner());
+
+        PropertyPane ownersPane = ((PropertyPane) newGamePane);
+
+        int toll = (int) (ownersPane.getPrice() * 6);
+
+        owner.setMoney((int) (owner.getMoney() + toll));
+        currentPlayer.setMoney(currentPlayer.getMoney() - toll);
+
+        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + toll + " to player " + owner.getId() + ".");
+    }
+
+    private void handleBuyButtonClick(Button sender) {
 
 
-        Player currentPlayer = players.get(currentPlayerTurn);
+        Player currentPlayer = players.get(gameStateManager.getCurrentPlayerTurn());
         PropertyPane currentPane = (PropertyPane) gameStateManager.getGamePanes().get(currentPlayer.getPosition());
 
-        if(currentPlayer.getMoney() >= currentPane.getPrice())
-        {
-            currentPane.setBought(currentPlayer);
-        }
-        else
-        {
+        if (currentPlayer.getMoney() >= currentPane.getPrice()) {
+            if (currentPane.setBought(currentPlayer))
+            {
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
+            }
+
+            //System.out.println("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
+
+            List<String> deeds = new ArrayList<>();
+            for (PropertyPane p : currentPlayer.getTitleDeeds()) {
+                deeds.add(p.getName());
+            }
+
+            deedLists.get(currentPlayer.getId() - 1).getItems().setAll(deeds);
+
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Alert");
             alert.setHeaderText("Cannot Buy Property!");
@@ -249,20 +295,9 @@ public class StatsPanelController {
             alert.showAndWait();
         }
 
-        List<String> deeds = new ArrayList<>();
-        for(PropertyPane p : currentPlayer.getTitleDeeds())
-        {
-            deeds.add(p.getName());
-        }
-
-        deedLists.get(currentPlayer.getId() - 1).getItems().setAll(deeds);
-
-        buyButtons.get(currentPlayer.getId()-1).setDisable(true);
+        buyButtons.get(currentPlayer.getId() - 1).setDisable(true);
 
         updateMoneyLabels();
-
-        System.out.println("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
-
 
     }
 

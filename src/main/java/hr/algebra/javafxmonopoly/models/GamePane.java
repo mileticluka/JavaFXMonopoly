@@ -1,4 +1,4 @@
-package hr.algebra.javafxmonopoly.enums;
+package hr.algebra.javafxmonopoly.models;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

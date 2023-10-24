@@ -1,6 +1,7 @@
 package hr.algebra.javafxmonopoly;
 
 import hr.algebra.javafxmonopoly.controllers.GameBoardController;
+import hr.algebra.javafxmonopoly.controllers.LogPanelController;
 import hr.algebra.javafxmonopoly.controllers.StatsPanelController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,16 @@ public class JavaFXMonopolyApplication extends Application {
         fxmlLoader.setController(new StatsPanelController(manager));
         borderPane.setRight(fxmlLoader.load());
 
-        Scene scene = new Scene(borderPane, 1400, 800);
+        FXMLLoader fxmlLoader1 = new FXMLLoader(JavaFXMonopolyApplication.class.getResource("views/log-panel.fxml"));
+        LogPanelController logPanelController = new LogPanelController();
+        fxmlLoader1.setController(logPanelController);
+        borderPane.setBottom(fxmlLoader1.load());
+
+        manager.addLogger(logPanelController);
+
+
+
+        Scene scene = new Scene(borderPane, 1400, 900);
         stage.setTitle("JavaFX Monopoly");
         stage.setScene(scene);
         stage.setResizable(false);

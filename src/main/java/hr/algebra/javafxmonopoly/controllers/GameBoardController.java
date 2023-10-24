@@ -1,7 +1,7 @@
 package hr.algebra.javafxmonopoly.controllers;
 
 import hr.algebra.javafxmonopoly.GameBoard;
-import hr.algebra.javafxmonopoly.enums.GamePane;
+import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.models.Player;
 import javafx.scene.input.MouseEvent;

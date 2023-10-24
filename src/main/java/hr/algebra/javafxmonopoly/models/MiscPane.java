@@ -1,6 +1,5 @@
 package hr.algebra.javafxmonopoly.models;
 
-import hr.algebra.javafxmonopoly.enums.GamePane;
 import hr.algebra.javafxmonopoly.enums.Type;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
