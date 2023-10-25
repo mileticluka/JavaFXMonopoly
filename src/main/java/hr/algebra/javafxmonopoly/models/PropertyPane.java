@@ -18,30 +18,24 @@ public class PropertyPane extends GamePane {
 
     private Player owner;
 
-    public String getName()
-    {
+    public String getName() {
         return nameLabel.getText();
     }
 
-    public int getPrice()
-    {
+    public int getPrice() {
         return this.price;
     }
 
-    public boolean setBought(Player p)
-    {
+    public boolean setBought(Player p) {
 
-        if(this.owner == null)
-        {
+        if (this.owner == null) {
             this.owner = p;
             this.priceLabel.setText("Owned By: Player " + p.getId());
             p.addTitleDeed(this);
             this.bought = true;
-            p.setMoney(p.getMoney()-this.price);
+            p.setMoney(p.getMoney() - this.price);
             return true;
-        }
-        else
-        {
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Alert");
             alert.setHeaderText("Cannot Buy Property!");
@@ -52,12 +46,11 @@ public class PropertyPane extends GamePane {
 
     }
 
-    public void setSold(Player p)
-    {
-            this.owner = null;
-            this.priceLabel.setText("Price: $" + price);
-            p.removeTitleDeed(this);
-            this.bought = false;
+    public void setSold(Player p) {
+        this.owner = null;
+        this.priceLabel.setText("Price: $" + price);
+        p.removeTitleDeed(this);
+        this.bought = false;
     }
 
     public PropertyPane(String propertyName, int price, Group group) {
@@ -102,30 +95,24 @@ public class PropertyPane extends GamePane {
                 break;
         }
 
-        // Create labels for displaying information
         nameLabel = new Label(propertyName);
         priceLabel = new Label("Price: $" + price);
 
-        // Set label styles
         nameLabel.setStyle("-fx-font-size: 10; -fx-font-weight: bold;");
         priceLabel.setStyle("-fx-font-size: 10;");
 
-        // Enable wrapping text
         nameLabel.setWrapText(true);
         priceLabel.setWrapText(true);
 
         nameLabel.setTextAlignment(TextAlignment.CENTER);
         priceLabel.setTextAlignment(TextAlignment.CENTER);
 
-        // Arrange labels in a VBox
-        VBox labelsVBox = new VBox(10); // Adjust the spacing by changing the value (e.g., VBox(10))
+        VBox labelsVBox = new VBox(10);
         labelsVBox.getChildren().addAll(nameLabel, priceLabel);
         labelsVBox.setAlignment(Pos.CENTER);
 
-        // Add VBox to the stack pane
         this.getChildren().add(labelsVBox);
 
-        // Center align labels within the stack pane
         setAlignment(Pos.CENTER);
     }
 
@@ -133,8 +120,7 @@ public class PropertyPane extends GamePane {
         return bought;
     }
 
-    public Player getOwner()
-    {
+    public Player getOwner() {
         return this.owner;
     }
 }

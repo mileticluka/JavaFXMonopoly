@@ -35,7 +35,6 @@ public class JavaFXMonopolyApplication extends Application {
         manager.addLogger(logPanelController);
 
 
-
         Scene scene = new Scene(borderPane, 1400, 900);
         stage.setTitle("JavaFX Monopoly");
         stage.setScene(scene);

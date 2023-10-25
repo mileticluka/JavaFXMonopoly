@@ -262,7 +262,7 @@ public class GameBoard extends GridPane {
 
         this.add(imagePane, 1, 1, 9, 9);
 
-        bindPaneSizeProperties(imagePane);
+        setPaneSizeProperties(imagePane);
 
         ImageView imageView = createImageView();
 
@@ -271,7 +271,7 @@ public class GameBoard extends GridPane {
         imagePane.getChildren().add(imageView);
     }
 
-    private void bindPaneSizeProperties(Pane pane) {
+    private void setPaneSizeProperties(Pane pane) {
         final DoubleBinding multipliedHeight = this.heightProperty().multiply(0.72);
         final DoubleBinding multipliedWidth = this.widthProperty().multiply(0.72);
 

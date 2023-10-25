@@ -25,14 +25,11 @@ public class GamePane extends StackPane {
     private void initialize() {
         setAlignment(Pos.CENTER);
 
-        // Create a VBox to contain player circles
-        playerCircleContainer = new VBox(5); // Adjust spacing as needed
+        playerCircleContainer = new VBox(5);
         playerCircleContainer.setAlignment(Pos.CENTER);
 
-        // Create labels for displaying information
         createLabelsVBox();
 
-        // Add the VBox to the stack pane
         getChildren().addAll(playerCircleContainer, labelsVBox);
     }
 
@@ -44,20 +41,18 @@ public class GamePane extends StackPane {
     public void addPlayerCircle(int playerId, Color color) {
         if (playerCircles.size() < MAX_PLAYERS) {
             Circle playerCircle = createPlayerCircle(color);
-            playerCircle.setUserData(playerId); // Set player ID as UserData
+            playerCircle.setUserData(playerId);
             playerCircles.add(playerCircle);
             updatePlayerCirclePositions();
         } else {
-            // If maximum number of players is reached, do nothing or handle as needed
             System.out.println("Maximum number of players reached.");
         }
     }
 
     public void drawPlayer(int playerId) {
-        // Draw a single player circle with the player's color
         if (playerId >= 1 && playerId <= MAX_PLAYERS) {
             Color playerColor = getPlayerColor(playerId);
-            addPlayerCircle(playerId,playerColor);
+            addPlayerCircle(playerId, playerColor);
         } else {
             System.out.println("Invalid player ID: " + playerId);
         }
@@ -65,7 +60,6 @@ public class GamePane extends StackPane {
 
     public void erasePlayer(int playerId) {
         if (playerId >= 1 && playerId <= MAX_PLAYERS) {
-            // Remove the player circle with the specified ID
             playerCircles.removeIf(circle -> circle.getUserData() != null && (int) circle.getUserData() == playerId);
             updatePlayerCirclePositions();
         } else {
@@ -74,7 +68,6 @@ public class GamePane extends StackPane {
     }
 
     private Color getPlayerColor(int playerId) {
-        // You can customize the colors based on player ID
         switch (playerId) {
             case 1:
                 return Color.BLUE;
@@ -101,18 +94,14 @@ public class GamePane extends StackPane {
     }
 
     protected void setupLabels(String name, String info, int fontSize) {
-        // Clear existing labels
         labelsVBox.getChildren().clear();
 
-        // Create labels for displaying information
         Label nameLabel = new Label(name);
         Label infoLabel = new Label(info);
 
-        // Enable text wrapping
         nameLabel.setWrapText(true);
         infoLabel.setWrapText(true);
 
-        // Set label styles with the specified font size
         nameLabel.setStyle("-fx-font-size: " + fontSize + "; -fx-font-weight: bold;");
         infoLabel.setStyle("-fx-font-size: " + fontSize + ";");
 

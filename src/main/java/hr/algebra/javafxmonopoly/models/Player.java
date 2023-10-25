@@ -20,25 +20,23 @@ public class Player {
         this.playing = true;
     }
 
-    public void addTitleDeed(PropertyPane propertyPane)
-    {
+    public void addTitleDeed(PropertyPane propertyPane) {
         this.deeds.add(propertyPane);
     }
-    public void removeTitleDeed (PropertyPane propertyPane) {this.deeds.remove(propertyPane);}
 
-    public void setBankrupt()
-    {
-        this.getTitleDeeds().stream()
-                .filter(deed -> deed != null)
-                .forEach(deed -> {
+    public void removeTitleDeed(PropertyPane propertyPane) {
+        this.deeds.remove(propertyPane);
+    }
+
+    public void setBankrupt() {
+        this.getTitleDeeds().stream().filter(deed -> deed != null).forEach(deed -> {
             deed.setSold(this);
         });
 
         this.playing = false;
     }
 
-    public List<PropertyPane> getTitleDeeds()
-    {
+    public List<PropertyPane> getTitleDeeds() {
         return this.deeds;
     }
 

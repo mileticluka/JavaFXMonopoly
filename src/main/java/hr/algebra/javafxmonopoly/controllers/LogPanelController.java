@@ -7,11 +7,8 @@ public class LogPanelController {
 
     @FXML
     private ListView logList;
-
-    public LogPanelController() {}
-
-    public void addLog(String str)
-    {
+    
+    public void addLog(String str) {
         logList.getItems().add(str);
         logList.scrollTo(logList.getItems().size());
     }

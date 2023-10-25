@@ -163,9 +163,9 @@ public class GameLogicController {
         Player currentPlayer = players.get(gameStateManager.getCurrentPlayerTurn());
         int oldPos = currentPlayer.getPosition();
 
-        GamePane newGamePane = movePlayer(currentPlayer,diceRoll);
+        GamePane newGamePane = movePlayer(currentPlayer, diceRoll);
 
-        toggleBuyButton(currentPlayer,newGamePane);
+        toggleBuyButton(currentPlayer, newGamePane);
 
         //Handle Looping over start pane
         int newPos = currentPlayer.getPosition();
@@ -176,29 +176,22 @@ public class GameLogicController {
         }
 
         //Handle stepping on property
-        if (newGamePane instanceof PropertyPane &&
-                ((PropertyPane) newGamePane).getBought() &&
-                !((PropertyPane) newGamePane).getOwner().equals(currentPlayer)) {
+        if (newGamePane instanceof PropertyPane && ((PropertyPane) newGamePane).getBought() && !((PropertyPane) newGamePane).getOwner().equals(currentPlayer)) {
             handlePropertyStep(currentPlayer, newGamePane);
-        }
-        else if (newGamePane instanceof  MiscPane)
-        {
-            handleMiscStep(currentPlayer,newGamePane);
+        } else if (newGamePane instanceof MiscPane) {
+            handleMiscStep(currentPlayer, newGamePane);
         }
 
         updateMoneyLabels();
 
-        if(currentPlayer.getMoney() <= 0)
-        {
+        if (currentPlayer.getMoney() <= 0) {
             handleBankrupt(currentPlayer);
         }
 
         togglePlayerPanels(currentPlayer);
     }
 
-
-    private void handleBankrupt(Player currentPlayer)
-    {
+    private void handleBankrupt(Player currentPlayer) {
         currentPlayer.setBankrupt();
 
         GamePane currentPane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
@@ -207,8 +200,7 @@ public class GameLogicController {
         gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " Bankrupted and has been removed from the game.");
     }
 
-    private GamePane movePlayer(Player currentPlayer, int diceRoll)
-    {
+    private GamePane movePlayer(Player currentPlayer, int diceRoll) {
         GamePane oldGamePane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
         oldGamePane.erasePlayer(currentPlayer.getId());
 
@@ -222,18 +214,15 @@ public class GameLogicController {
         return newGamePane;
     }
 
-    private void togglePlayerPanels(Player currentPlayer)
-    {
+    private void togglePlayerPanels(Player currentPlayer) {
         panes.get(gameStateManager.getCurrentPlayerTurn()).setDisable(true);
 
         gameStateManager.nextPlayerTurn();
 
-        for(int i = 0; i < 4; i++)
-        {
-            if(i == 3)
-            {
+        for (int i = 0; i < 4; i++) {
+            if (i == 3) {
                 gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " is the winner!");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION,"Player " + currentPlayer.getId() + " is the winner!");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player " + currentPlayer.getId() + " is the winner!");
                 alert.setHeaderText("WINNER");
                 alert.showAndWait();
                 Stage stage = (Stage) p1btn.getScene().getWindow();
@@ -241,12 +230,9 @@ public class GameLogicController {
 
             }
 
-            if(!gameStateManager.getCurrentPlayer().playing)
-            {
+            if (!gameStateManager.getCurrentPlayer().playing) {
                 gameStateManager.nextPlayerTurn();
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -254,8 +240,7 @@ public class GameLogicController {
         panes.get(gameStateManager.getCurrentPlayerTurn()).setDisable(false);
     }
 
-    private void toggleBuyButton(Player currentPlayer ,GamePane newGamePane)
-    {
+    private void toggleBuyButton(Player currentPlayer, GamePane newGamePane) {
         if (newGamePane instanceof PropertyPane && !((PropertyPane) newGamePane).getBought()) {
             buyButtons.get(currentPlayer.getId() - 1).setDisable(false);
             placeLabels.get(currentPlayer.getId() - 1).setText(((PropertyPane) newGamePane).getName());
@@ -265,7 +250,7 @@ public class GameLogicController {
         }
     }
 
-    private void handlePropertyStep(Player currentPlayer,GamePane newGamePane) {
+    private void handlePropertyStep(Player currentPlayer, GamePane newGamePane) {
         Player owner = (((PropertyPane) newGamePane).getOwner());
 
         PropertyPane ownersPane = ((PropertyPane) newGamePane);
@@ -278,8 +263,7 @@ public class GameLogicController {
         gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + toll + " to player " + owner.getId() + ".");
     }
 
-    private void handleMiscStep(Player currentPlayer, GamePane newGamePane)
-    {
+    private void handleMiscStep(Player currentPlayer, GamePane newGamePane) {
         MiscPane steppedPane = (MiscPane) newGamePane;
 
         Random random = new Random();
@@ -311,8 +295,7 @@ public class GameLogicController {
         PropertyPane currentPane = (PropertyPane) gameStateManager.getGamePanes().get(currentPlayer.getPosition());
 
         if (currentPlayer.getMoney() >= currentPane.getPrice()) {
-            if (currentPane.setBought(currentPlayer))
-            {
+            if (currentPane.setBought(currentPlayer)) {
                 gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
             }
 

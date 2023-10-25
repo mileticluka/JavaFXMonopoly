@@ -16,23 +16,17 @@ public class GameBoardController {
         gameStateManager.setGamePanes(gameBoard.getGamePanes());
 
         for (GamePane pane : gameBoard.getGamePanes()) {
-            pane.setOnMouseClicked(event -> handlePaneClick(pane,event));
+            pane.setOnMouseClicked(event -> handlePaneClick(pane, event));
         }
 
-        for (Player p: gameStateManager.getPlayers())
-        {
+        for (Player p : gameStateManager.getPlayers()) {
             gameStateManager.getGamePanes().get(0).drawPlayer(p.getId());
         }
-
     }
 
-    private void handlePaneClick(GamePane pane,MouseEvent evt) {
+    private void handlePaneClick(GamePane pane, MouseEvent evt) {
         Player currentPlayer = gameStateManager.getCurrentPlayer();
         System.out.println("Player " + currentPlayer.getId() + " clicked on " + pane.getId());
-
-
-
-
     }
 
 }

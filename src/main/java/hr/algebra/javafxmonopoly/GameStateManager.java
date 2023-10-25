@@ -16,13 +16,11 @@ public class GameStateManager {
 
     public LogPanelController logger;
 
-    public int getCurrentPlayerTurn()
-    {
+    public int getCurrentPlayerTurn() {
         return this.currentPlayerIndex;
     }
 
-    public void addLogger(LogPanelController logPanelController)
-    {
+    public void addLogger(LogPanelController logPanelController) {
         this.logger = logPanelController;
     }
 
@@ -38,8 +36,7 @@ public class GameStateManager {
         currentPlayerIndex = 0;
     }
 
-    public void setGamePanes(List<GamePane> gamePanes)
-    {
+    public void setGamePanes(List<GamePane> gamePanes) {
         this.gamePanes = gamePanes;
     }
 
