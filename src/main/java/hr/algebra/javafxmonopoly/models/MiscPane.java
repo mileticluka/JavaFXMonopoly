@@ -9,8 +9,11 @@ import javafx.scene.text.TextAlignment;
 public class MiscPane extends GamePane {
 
     private String info;
+    private final Type type;
 
     public MiscPane(String miscName, Type type, String info) {
+
+        this.type = type;
 
         this.setHeight(112);
         this.setWidth(64);
@@ -42,5 +45,10 @@ public class MiscPane extends GamePane {
 
         // Center align labels within the stack pane
         setAlignment(Pos.CENTER);
+    }
+
+    public Type getType()
+    {
+        return this.type;
     }
 }

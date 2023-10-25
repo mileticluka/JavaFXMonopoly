@@ -2,20 +2,19 @@ package hr.algebra.javafxmonopoly.controllers;
 
 import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.GameStateManager;
+import hr.algebra.javafxmonopoly.models.MiscPane;
 import hr.algebra.javafxmonopoly.models.Player;
 import hr.algebra.javafxmonopoly.models.PropertyPane;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class StatsPanelController {
+public class GameLogicController {
 
     private final GameStateManager gameStateManager;
 
@@ -100,7 +99,7 @@ public class StatsPanelController {
     //endregion
 
 
-    public StatsPanelController(GameStateManager gameStateManager) {
+    public GameLogicController(GameStateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
     }
 
@@ -182,6 +181,10 @@ public class StatsPanelController {
                 !((PropertyPane) newGamePane).getOwner().equals(currentPlayer)) {
             handlePropertyStep(currentPlayer, newGamePane);
         }
+        else if (newGamePane instanceof  MiscPane)
+        {
+            handleMiscStep(currentPlayer,newGamePane);
+        }
 
         updateMoneyLabels();
 
@@ -190,7 +193,7 @@ public class StatsPanelController {
             handleBankrupt(currentPlayer);
         }
 
-        togglePlayerPanels(currentPlayer,diceRoll);
+        togglePlayerPanels(currentPlayer);
     }
 
 
@@ -216,7 +219,7 @@ public class StatsPanelController {
         return newGamePane;
     }
 
-    private void togglePlayerPanels(Player currentPlayer, int diceRoll)
+    private void togglePlayerPanels(Player currentPlayer)
     {
         panes.get(gameStateManager.getCurrentPlayerTurn()).setDisable(true);
 
@@ -226,7 +229,13 @@ public class StatsPanelController {
         {
             if(i == 3)
             {
-                gameStateManager.logger.addLog("Winner!");
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " is the winner!");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION,"Player " + currentPlayer.getId() + " is the winner!");
+                alert.setHeaderText("WINNER");
+                alert.showAndWait();
+                Stage stage = (Stage) p1btn.getScene().getWindow();
+                stage.close();
+
             }
 
             if(!gameStateManager.getCurrentPlayer().playing)
@@ -266,8 +275,34 @@ public class StatsPanelController {
         gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + toll + " to player " + owner.getId() + ".");
     }
 
-    private void handleBuyButtonClick(Button sender) {
+    private void handleMiscStep(Player currentPlayer, GamePane newGamePane)
+    {
+        MiscPane steppedPane = (MiscPane) newGamePane;
 
+        Random random = new Random();
+
+        switch (steppedPane.getType()) {
+            case CHANCE:
+                int x = random.nextInt(200);
+                currentPlayer.setMoney(currentPlayer.getMoney() + x);
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " got " + x + " from the Chance space.");
+                break;
+            case COMMUNITY_CHEST:
+                int y = random.nextInt(500);
+                currentPlayer.setMoney(currentPlayer.getMoney() + y);
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " got " + y + " from the Community chest.");
+                break;
+            case INCOME_TAX:
+                int z = (int) (currentPlayer.getMoney() * 0.2);
+                currentPlayer.setMoney(currentPlayer.getMoney() - z);
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + z + " in taxes.");
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid misc pane type: " + steppedPane.getType());
+        }
+    }
+
+    private void handleBuyButtonClick(Button button) {
 
         Player currentPlayer = players.get(gameStateManager.getCurrentPlayerTurn());
         PropertyPane currentPane = (PropertyPane) gameStateManager.getGamePanes().get(currentPlayer.getPosition());
@@ -277,8 +312,6 @@ public class StatsPanelController {
             {
                 gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
             }
-
-            //System.out.println("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
 
             List<String> deeds = new ArrayList<>();
             for (PropertyPane p : currentPlayer.getTitleDeeds()) {
@@ -302,7 +335,6 @@ public class StatsPanelController {
     }
 
     private int rollDice() {
-        // Simulate a 2 six-sided dice roll
         Random random = new Random();
         int dice1 = random.nextInt(6) + 1;
         int dice2 = random.nextInt(6) + 1;
