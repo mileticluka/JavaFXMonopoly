@@ -52,7 +52,7 @@ public class GameBoard extends GridPane {
         p3.setId(String.valueOf(3));
         gamePanes.add(p3);
 
-        MiscPane p4 = new MiscPane("INCOME TAX", Type.INCOME_TAX, "Pay $200");
+        MiscPane p4 = new MiscPane("INCOME TAX", Type.INCOME_TAX, "Pay 20% tax");
         this.add(p4, 6, 10);
         p4.setId(String.valueOf(4));
         gamePanes.add(p4);
@@ -222,7 +222,7 @@ public class GameBoard extends GridPane {
         p37.setId(String.valueOf(37));
         gamePanes.add(p37);
 
-        MiscPane p38 = new MiscPane("LUXURY TAX", Type.INCOME_TAX, "Pay $100");
+        MiscPane p38 = new MiscPane("LUXURY TAX", Type.INCOME_TAX, "Pay 20% tax");
         this.add(p38, 10, 8);
         p38.setId(String.valueOf(38));
         gamePanes.add(p38);

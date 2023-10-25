@@ -8,11 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35076336-fd96-4d45-a57a-2defdea400a9" name="Changes" comment="initial commit">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/StatsPanelController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/models/MiscPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/models/MiscPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/GameBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +100,7 @@
       <workItem from="1697984849623" duration="1556000" />
       <workItem from="1698081436264" duration="3308000" />
       <workItem from="1698237836813" duration="157000" />
-      <workItem from="1698248017443" duration="2573000" />
+      <workItem from="1698248017443" duration="3403000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />

@@ -200,7 +200,10 @@ public class GameLogicController {
     private void handleBankrupt(Player currentPlayer)
     {
         currentPlayer.setBankrupt();
-        deedLists.get(currentPlayer.getId()-1).getItems().clear();
+
+        GamePane currentPane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
+        currentPane.erasePlayer(currentPlayer.getId());
+
         gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " Bankrupted and has been removed from the game.");
     }
 
