@@ -3,18 +3,16 @@ package hr.algebra.javafxmonopoly;
 import hr.algebra.javafxmonopoly.controllers.LogPanelController;
 import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.models.Player;
-import hr.algebra.javafxmonopoly.models.PropertyPane;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameStateManager {
 
-    private final List<Player> players;
-    private List<GamePane> gamePanes;
+    private List<Player> players;
+    transient private List<GamePane> gamePanes;
     private int currentPlayerIndex;
-
-    public LogPanelController logger;
+    transient public LogPanelController logger;
 
     public int getCurrentPlayerTurn() {
         return this.currentPlayerIndex;
@@ -22,6 +20,13 @@ public class GameStateManager {
 
     public void addLogger(LogPanelController logPanelController) {
         this.logger = logPanelController;
+    }
+
+
+    public void setProperties(GameStateSerializable gameStateSerializable)
+    {
+        this.players = gameStateSerializable.players;
+        this.currentPlayerIndex = gameStateSerializable.currentPlayerIndex;
     }
 
     public GameStateManager() {

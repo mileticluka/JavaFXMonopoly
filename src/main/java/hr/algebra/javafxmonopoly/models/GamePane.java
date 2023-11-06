@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.TextAlignment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

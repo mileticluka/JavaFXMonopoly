@@ -1,14 +1,18 @@
 package hr.algebra.javafxmonopoly.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Player {
+public class Player implements Serializable{
     private int id;
     private int money;
     private int position;
-    List<PropertyPane> deeds;
+
+    transient List<PropertyPane> deeds;
+    List<Integer> deedIndices;
+    
 
     public boolean playing;
 
@@ -16,16 +20,18 @@ public class Player {
         this.id = id;
         this.money = money;
         this.position = 0;
-        this.deeds = new CopyOnWriteArrayList<>();
+        this.deedIndices = new CopyOnWriteArrayList<>();
         this.playing = true;
     }
 
     public void addTitleDeed(PropertyPane propertyPane) {
         this.deeds.add(propertyPane);
+        this.deedIndices.add(Integer.valueOf(propertyPane.getId()));
     }
 
     public void removeTitleDeed(PropertyPane propertyPane) {
         this.deeds.remove(propertyPane);
+        this.deedIndices.remove( Integer.valueOf(propertyPane.getId()));
     }
 
     public void setBankrupt() {
@@ -38,6 +44,14 @@ public class Player {
 
     public List<PropertyPane> getTitleDeeds() {
         return this.deeds;
+    }
+
+    public void loadDeeds(List<GamePane> allPanes) {
+        for(int id : this.deedIndices)
+        {
+            this.deeds.add((PropertyPane) allPanes.get(id));
+            ((PropertyPane) allPanes.get(id)).setOwnerDirectly(this);
+        }
     }
 
     public int getMoney() {

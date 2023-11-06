@@ -7,7 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 
-public class PropertyPane extends GamePane {
+import java.io.Serializable;
+
+public class PropertyPane extends GamePane{
 
     private final int price;
 
@@ -24,6 +26,10 @@ public class PropertyPane extends GamePane {
 
     public int getPrice() {
         return this.price;
+    }
+    public void setOwnerDirectly(Player p)
+    {
+        this.owner = p;
     }
 
     public boolean setBought(Player p) {

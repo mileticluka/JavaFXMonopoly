@@ -201,6 +201,7 @@ public class GameLogicController {
     }
 
     private GamePane movePlayer(Player currentPlayer, int diceRoll) {
+
         GamePane oldGamePane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
         oldGamePane.erasePlayer(currentPlayer.getId());
 
@@ -212,6 +213,15 @@ public class GameLogicController {
         gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " rolled a " + diceRoll + ". New position: " + currentPlayer.getPosition());
 
         return newGamePane;
+    }
+
+    public void setPlayerPanelsDirectly(Player currentPlayer){
+        for(Pane p : panes)
+        {
+            p.setDisable(true);
+        }
+
+        panes.get(currentPlayer.getId()-1).setDisable(false);
     }
 
     private void togglePlayerPanels(Player currentPlayer) {

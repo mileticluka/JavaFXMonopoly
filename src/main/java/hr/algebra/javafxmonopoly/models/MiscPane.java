@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 
+import java.io.Serializable;
+
 public class MiscPane extends GamePane {
 
     private String info;

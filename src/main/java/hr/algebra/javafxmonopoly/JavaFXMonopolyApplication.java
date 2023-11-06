@@ -3,9 +3,13 @@ package hr.algebra.javafxmonopoly;
 import hr.algebra.javafxmonopoly.controllers.GameBoardController;
 import hr.algebra.javafxmonopoly.controllers.LogPanelController;
 import hr.algebra.javafxmonopoly.controllers.GameLogicController;
+import hr.algebra.javafxmonopoly.controllers.MenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -18,13 +22,14 @@ public class JavaFXMonopolyApplication extends Application {
         GameStateManager manager = new GameStateManager();
 
         GameBoard gameBoard = new GameBoard();
-        GameBoardController gameController = new GameBoardController(gameBoard, manager);
+        new GameBoardController(gameBoard, manager);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(gameBoard);
 
         FXMLLoader fxmlLoader = new FXMLLoader(JavaFXMonopolyApplication.class.getResource("views/stats-panel.fxml"));
-        fxmlLoader.setController(new GameLogicController(manager));
+        GameLogicController gameLogicController = new GameLogicController(manager);
+        fxmlLoader.setController(gameLogicController);
         borderPane.setRight(fxmlLoader.load());
 
         FXMLLoader fxmlLoader1 = new FXMLLoader(JavaFXMonopolyApplication.class.getResource("views/log-panel.fxml"));
@@ -34,6 +39,14 @@ public class JavaFXMonopolyApplication extends Application {
 
         manager.addLogger(logPanelController);
 
+        Menu fileMenu = new Menu("File");
+        fileMenu.getItems().add(new MenuItem("Save Game State"));
+        fileMenu.getItems().add(new MenuItem("Load Game State"));
+        MenuBar menuBar = new MenuBar(fileMenu);
+
+        new MenuController(menuBar,manager,gameLogicController,gameBoard);
+
+        borderPane.setTop(menuBar);
 
         Scene scene = new Scene(borderPane, 1400, 900);
         stage.setTitle("JavaFX Monopoly");
