@@ -5,6 +5,7 @@ import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.GameStateSerializable;
 import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.models.Player;
+import hr.algebra.javafxmonopoly.models.PropertyPane;
 import hr.algebra.javafxmonopoly.models.SerializationUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuBar;
@@ -39,6 +40,13 @@ public class MenuController {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showSaveDialog(new Stage());
 
+        if(file == null)
+        {
+            System.out.println("NOT SAVED!");
+            return;
+        }
+
+
         this.gameStateSerializable.setProperties(gameStateManager);
 
         try {
@@ -71,21 +79,28 @@ public class MenuController {
         }
 
         try {
+            gameStateSerializable = SerializationUtils.read(file);
             this.gameStateManager.setProperties(gameStateSerializable);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        for(Player p : this.gameStateManager.getPlayers())
-        {
-            p.loadDeeds(this.gameStateManager.getGamePanes());
-            this.gameStateManager.getGamePanes().get(p.getId()).drawPlayer(p.getId());
-        }
+        gameStateManager.logger.setLogs(gameStateManager.getLogs());
+
 
         gameLogicController.setPlayerPanelsDirectly(gameStateManager.getCurrentPlayer());
 
-        System.out.println(this.gameStateManager.getCurrentPlayerTurn());
-        System.out.println(this.gameStateManager.getCurrentPlayer().getId());
+        for(Player p : gameStateManager.getPlayers())
+        {
+            gameStateManager.getGamePanes().get(p.getPosition()).drawPlayer(p.getId());
+            p.loadDeeds(gameStateManager.getGamePanes());
+            gameLogicController.updateDeedList(p);
+
+
+        }
+        gameLogicController.updateMoneyLabels();
+
+        System.out.println(gameStateManager);
 
         System.out.println("LOADED!");
 
