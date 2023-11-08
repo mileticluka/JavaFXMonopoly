@@ -11,9 +11,13 @@ public class GameStateSerializable implements Serializable {
     public List<Player> players;
     public int currentPlayerIndex;
 
+    public List<String> logs;
+    public LogPanelController logger;
+
     public void setProperties(GameStateManager gameStateManager)
     {
         this.players = gameStateManager.getPlayers();
         this.currentPlayerIndex = gameStateManager.getCurrentPlayerTurn();
+        this.logs = gameStateManager.getLogs();
     }
 }

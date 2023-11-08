@@ -14,6 +14,13 @@ public class GameStateManager {
     private int currentPlayerIndex;
     transient public LogPanelController logger;
 
+    private List<String> logs;
+
+    public List<String> getLogs()
+    {
+        return this.logs;
+    }
+
     public int getCurrentPlayerTurn() {
         return this.currentPlayerIndex;
     }
@@ -27,6 +34,7 @@ public class GameStateManager {
     {
         this.players = gameStateSerializable.players;
         this.currentPlayerIndex = gameStateSerializable.currentPlayerIndex;
+        this.logs = gameStateSerializable.logs;
     }
 
     public GameStateManager() {
@@ -39,6 +47,8 @@ public class GameStateManager {
 
         // Set the initial player
         currentPlayerIndex = 0;
+
+        this.logs = new ArrayList<>();
     }
 
     public void setGamePanes(List<GamePane> gamePanes) {

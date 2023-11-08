@@ -3,7 +3,7 @@ package hr.algebra.javafxmonopoly;
 import hr.algebra.javafxmonopoly.controllers.GameBoardController;
 import hr.algebra.javafxmonopoly.controllers.LogPanelController;
 import hr.algebra.javafxmonopoly.controllers.GameLogicController;
-import hr.algebra.javafxmonopoly.controllers.MenuController;
+import hr.algebra.javafxmonopoly.controllers.SerializationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -44,7 +44,7 @@ public class JavaFXMonopolyApplication extends Application {
         fileMenu.getItems().add(new MenuItem("Load Game State"));
         MenuBar menuBar = new MenuBar(fileMenu);
 
-        new MenuController(menuBar,manager,gameLogicController,gameBoard);
+        new SerializationController(menuBar,manager,gameLogicController,gameBoard);
 
         borderPane.setTop(menuBar);
 

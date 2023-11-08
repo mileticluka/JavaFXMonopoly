@@ -3,9 +3,7 @@ package hr.algebra.javafxmonopoly.controllers;
 import hr.algebra.javafxmonopoly.GameBoard;
 import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.GameStateSerializable;
-import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.models.Player;
-import hr.algebra.javafxmonopoly.models.PropertyPane;
 import hr.algebra.javafxmonopoly.models.SerializationUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuBar;
@@ -15,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-public class MenuController {
+public class SerializationController {
 
     GameBoard gameBoard;
     MenuBar menuBar;
@@ -24,7 +22,7 @@ public class MenuController {
 
     GameStateSerializable gameStateSerializable;
 
-    public MenuController(MenuBar menuBar, GameStateManager gameStateManager, GameLogicController gameLogicController, GameBoard gameBoard) {
+    public SerializationController(MenuBar menuBar, GameStateManager gameStateManager, GameLogicController gameLogicController, GameBoard gameBoard) {
         this.menuBar = menuBar;
         this.gameStateManager = gameStateManager;
         this.gameLogicController = gameLogicController;

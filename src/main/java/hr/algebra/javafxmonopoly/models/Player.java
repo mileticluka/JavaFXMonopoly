@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Player implements Serializable{
+public class Player implements Serializable {
     private int id;
     private int money;
     private int position;
 
     transient List<PropertyPane> deeds;
     List<Integer> deedIndices;
-    
 
     public boolean playing;
 
@@ -20,6 +19,7 @@ public class Player implements Serializable{
         this.id = id;
         this.money = money;
         this.position = 0;
+        this.deeds = new CopyOnWriteArrayList<>();
         this.deedIndices = new CopyOnWriteArrayList<>();
         this.playing = true;
     }
@@ -35,7 +35,9 @@ public class Player implements Serializable{
     }
 
     public void setBankrupt() {
-        this.getTitleDeeds().stream().filter(deed -> deed != null).forEach(deed -> {
+        List<PropertyPane> deedsCopy = new ArrayList<>(getTitleDeeds());
+
+        deedsCopy.stream().filter(deed -> deed != null).forEach(deed -> {
             deed.setSold(this);
         });
 
@@ -47,11 +49,14 @@ public class Player implements Serializable{
     }
 
     public void loadDeeds(List<GamePane> allPanes) {
+        this.deeds = new ArrayList<>();
+
         for(int id : this.deedIndices)
         {
-            this.deeds.add((PropertyPane) allPanes.get(id));
             ((PropertyPane) allPanes.get(id)).setOwnerDirectly(this);
         }
+
+
     }
 
     public int getMoney() {
@@ -74,7 +79,4 @@ public class Player implements Serializable{
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }

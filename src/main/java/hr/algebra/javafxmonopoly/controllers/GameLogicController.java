@@ -18,7 +18,6 @@ public class GameLogicController {
 
     private final GameStateManager gameStateManager;
 
-    private List<Player> players;
 
 
     //region UI Elements Declarations...
@@ -137,8 +136,6 @@ public class GameLogicController {
         deedLists.add(p3DeedListView);
         deedLists.add(p4DeedListView);
 
-        players = gameStateManager.getPlayers();
-
         for (Pane p : panes) {
             p.setDisable(true);
         }
@@ -160,7 +157,7 @@ public class GameLogicController {
 
 
         int diceRoll = rollDice();
-        Player currentPlayer = players.get(gameStateManager.getCurrentPlayerTurn());
+        Player currentPlayer = gameStateManager.getPlayers().get(gameStateManager.getCurrentPlayerTurn());
         int oldPos = currentPlayer.getPosition();
 
         GamePane newGamePane = movePlayer(currentPlayer, diceRoll);
@@ -171,7 +168,7 @@ public class GameLogicController {
         int newPos = currentPlayer.getPosition();
         if (oldPos > newPos) {
             currentPlayer.setMoney(currentPlayer.getMoney() + 200);
-            gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " passed the Start and gained $200.");
+            gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " passed the Start and gained $200.",gameStateManager.getLogs());
             //System.out.println("Player " + currentPlayer.getId() + " passed the Start and gained $200.");
         }
 
@@ -197,7 +194,7 @@ public class GameLogicController {
         GamePane currentPane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
         currentPane.erasePlayer(currentPlayer.getId());
 
-        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " Bankrupted and has been removed from the game.");
+        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " Bankrupted and has been removed from the game.",gameStateManager.getLogs());
     }
 
     private GamePane movePlayer(Player currentPlayer, int diceRoll) {
@@ -210,7 +207,7 @@ public class GameLogicController {
         GamePane newGamePane = gameStateManager.getGamePanes().get(currentPlayer.getPosition());
 
         newGamePane.drawPlayer(currentPlayer.getId());
-        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " rolled a " + diceRoll + ". New position: " + currentPlayer.getPosition());
+        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " rolled a " + diceRoll + ". New position: " + currentPlayer.getPosition(),gameStateManager.getLogs());
 
         return newGamePane;
     }
@@ -231,7 +228,7 @@ public class GameLogicController {
 
         for (int i = 0; i < 4; i++) {
             if (i == 3) {
-                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " is the winner!");
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " is the winner!",gameStateManager.getLogs());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Player " + currentPlayer.getId() + " is the winner!");
                 alert.setHeaderText("WINNER");
                 alert.showAndWait();
@@ -270,7 +267,7 @@ public class GameLogicController {
         owner.setMoney((int) (owner.getMoney() + toll));
         currentPlayer.setMoney(currentPlayer.getMoney() - toll);
 
-        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + toll + " to player " + owner.getId() + ".");
+        gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + toll + " to player " + owner.getId() + ".",gameStateManager.getLogs());
     }
 
     private void handleMiscStep(Player currentPlayer, GamePane newGamePane) {
@@ -282,39 +279,45 @@ public class GameLogicController {
             case CHANCE:
                 int x = random.nextInt(200);
                 currentPlayer.setMoney(currentPlayer.getMoney() + x);
-                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " got " + x + " from the Chance space.");
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " got " + x + " from the Chance space.",gameStateManager.getLogs());
                 break;
             case COMMUNITY_CHEST:
                 int y = random.nextInt(500);
                 currentPlayer.setMoney(currentPlayer.getMoney() + y);
-                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " got " + y + " from the Community chest.");
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " got " + y + " from the Community chest.",gameStateManager.getLogs());
                 break;
             case INCOME_TAX:
                 int z = (int) (currentPlayer.getMoney() * 0.2);
                 currentPlayer.setMoney(currentPlayer.getMoney() - z);
-                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + z + " in taxes.");
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " paid " + z + " in taxes.",gameStateManager.getLogs());
                 break;
             default:
                 throw new IllegalArgumentException("Invalid misc pane type: " + steppedPane.getType());
         }
     }
 
+
+    public void updateDeedList(Player currentPlayer)
+    {
+        List<String> deeds = new ArrayList<>();
+        for (PropertyPane p : currentPlayer.getTitleDeeds()) {
+            deeds.add(p.getName());
+        }
+        deedLists.get(currentPlayer.getId() - 1).getItems().setAll(deeds);
+    }
+
     private void handleBuyButtonClick(Button button) {
 
-        Player currentPlayer = players.get(gameStateManager.getCurrentPlayerTurn());
+        Player currentPlayer = gameStateManager.getPlayers().get(gameStateManager.getCurrentPlayerTurn());
         PropertyPane currentPane = (PropertyPane) gameStateManager.getGamePanes().get(currentPlayer.getPosition());
 
         if (currentPlayer.getMoney() >= currentPane.getPrice()) {
             if (currentPane.setBought(currentPlayer)) {
-                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".");
+                gameStateManager.logger.addLog("Player " + currentPlayer.getId() + " bought " + currentPane.getName() + " for $" + currentPane.getPrice() + ".",gameStateManager.getLogs());
             }
 
-            List<String> deeds = new ArrayList<>();
-            for (PropertyPane p : currentPlayer.getTitleDeeds()) {
-                deeds.add(p.getName());
-            }
+            updateDeedList(currentPlayer);
 
-            deedLists.get(currentPlayer.getId() - 1).getItems().setAll(deeds);
 
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -337,9 +340,9 @@ public class GameLogicController {
         return dice1 + dice2;
     }
 
-    private void updateMoneyLabels() {
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
+    public void updateMoneyLabels() {
+        for (int i = 0; i < gameStateManager.getPlayers().size(); i++) {
+            Player player = gameStateManager.getPlayers().get(i);
             Label moneyLabel = getMoneyLabel(i + 1);
             moneyLabel.setText("$" + player.getMoney());
         }
