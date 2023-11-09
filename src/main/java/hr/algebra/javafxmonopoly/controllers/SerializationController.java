@@ -19,7 +19,6 @@ public class SerializationController {
     MenuBar menuBar;
     GameStateManager gameStateManager;
     GameLogicController gameLogicController;
-
     GameStateSerializable gameStateSerializable;
 
     public SerializationController(MenuBar menuBar, GameStateManager gameStateManager, GameLogicController gameLogicController, GameBoard gameBoard) {

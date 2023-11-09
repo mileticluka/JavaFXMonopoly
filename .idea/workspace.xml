@@ -8,12 +8,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35076336-fd96-4d45-a57a-2defdea400a9" name="Changes" comment="initial commit">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/documentation.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/documentation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/DocumentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/DocumentationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/DocumentationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/DocumentationUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/algebra/javafxmonopoly/docs/documentation.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

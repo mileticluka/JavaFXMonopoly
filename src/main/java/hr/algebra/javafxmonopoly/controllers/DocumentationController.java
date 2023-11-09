@@ -27,7 +27,7 @@ public class DocumentationController {
             alert.setHeaderText("Success");
             alert.showAndWait();
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, Arrays.toString(e.getStackTrace()));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, e.getMessage());
             alert.setHeaderText("Loading Failed");
             alert.showAndWait();
         }
