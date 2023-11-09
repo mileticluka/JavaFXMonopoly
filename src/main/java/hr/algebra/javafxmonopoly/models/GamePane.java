@@ -84,7 +84,7 @@ public class GamePane extends StackPane {
     }
 
     private Circle createPlayerCircle(Color color) {
-        Circle circle = new Circle(5, color); // Adjust the radius as needed
+        Circle circle = new Circle(5, color);
         circle.setStroke(Color.BLACK);
         return circle;
     }
