@@ -30,8 +30,8 @@ public class SerializationController {
 
         this.gameStateSerializable = new GameStateSerializable();
 
-        menuBar.getMenus().getFirst().getItems().getFirst().setOnAction(this::handleSaveButtonClick);
-        menuBar.getMenus().getFirst().getItems().getLast().setOnAction(this::handleLoadButtonClick);
+        menuBar.getMenus().get(0).getItems().get(0).setOnAction(this::handleSaveButtonClick);
+        menuBar.getMenus().get(0).getItems().get(1).setOnAction(this::handleLoadButtonClick);
     }
 
     private void handleSaveButtonClick(ActionEvent evt) {

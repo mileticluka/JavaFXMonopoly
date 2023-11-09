@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DocumentationUtils {
 
-    public static void generateHtmlDocumentationFile(URI path) throws IOException, ClassNotFoundException {
+    public static void generateHtmlDocumentationFile(String path) throws IOException, ClassNotFoundException {
 
         Path directoryPath = Paths.get(path).getParent();
 
@@ -53,7 +53,7 @@ public class DocumentationUtils {
 
         htmlBuilder.append("</body></html>");
 
-        Files.write(Path.of(path), htmlBuilder.toString().getBytes());
+        Files.writeString(Path.of(path), htmlBuilder.toString());
     }
 
     private static void appendFields(StringBuilder htmlBuilder, Field[] fields) {

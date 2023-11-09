@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class DocumentationController {
@@ -15,17 +17,17 @@ public class DocumentationController {
     public DocumentationController(MenuBar menuBar) {
         this.menuBar = menuBar;
 
-        menuBar.getMenus().get(1).getItems().getFirst().setOnAction(this::handleCreateButtonClick);
+        menuBar.getMenus().get(1).getItems().get(0).setOnAction(this::handleCreateButtonClick);
     }
 
     private void handleCreateButtonClick(ActionEvent evt) {
         try {
-            DocumentationUtils.generateHtmlDocumentationFile(Objects.requireNonNull(JavaFXMonopolyApplication.class.getResource("docs/documentation.html")).toURI());
+            DocumentationUtils.generateHtmlDocumentationFile("./docs/documentation.html");
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Documentation Created Successfully.");
             alert.setHeaderText("Success");
             alert.showAndWait();
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, e.getStackTrace().toString());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, Arrays.toString(e.getStackTrace()));
             alert.setHeaderText("Loading Failed");
             alert.showAndWait();
         }
