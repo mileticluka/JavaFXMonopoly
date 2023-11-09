@@ -1,9 +1,6 @@
 package hr.algebra.javafxmonopoly;
 
-import hr.algebra.javafxmonopoly.controllers.GameBoardController;
-import hr.algebra.javafxmonopoly.controllers.LogPanelController;
-import hr.algebra.javafxmonopoly.controllers.GameLogicController;
-import hr.algebra.javafxmonopoly.controllers.SerializationController;
+import hr.algebra.javafxmonopoly.controllers.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -39,12 +36,17 @@ public class JavaFXMonopolyApplication extends Application {
 
         manager.addLogger(logPanelController);
 
-        Menu fileMenu = new Menu("File");
-        fileMenu.getItems().add(new MenuItem("Save Game State"));
-        fileMenu.getItems().add(new MenuItem("Load Game State"));
-        MenuBar menuBar = new MenuBar(fileMenu);
+        Menu serializationMenu = new Menu("Serialization");
+        serializationMenu.getItems().add(new MenuItem("Save Game State"));
+        serializationMenu.getItems().add(new MenuItem("Load Game State"));
+
+        Menu documentationMenu = new Menu("Documentation");
+        documentationMenu.getItems().add(new MenuItem("Create Documentation"));
+
+        MenuBar menuBar = new MenuBar(serializationMenu,documentationMenu);
 
         new SerializationController(menuBar,manager,gameLogicController,gameBoard);
+        new DocumentationController(menuBar);
 
         borderPane.setTop(menuBar);
 

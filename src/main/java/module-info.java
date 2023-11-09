@@ -11,4 +11,6 @@ module hr.algebra.javafxmonopoly {
     opens hr.algebra.javafxmonopoly.models to javafx.fxml;
     exports hr.algebra.javafxmonopoly.enums;
     opens hr.algebra.javafxmonopoly.enums to javafx.fxml;
+    exports hr.algebra.javafxmonopoly.utils;
+    opens hr.algebra.javafxmonopoly.utils to javafx.fxml;
 }

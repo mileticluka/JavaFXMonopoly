@@ -1,7 +1,6 @@
-package hr.algebra.javafxmonopoly.models;
+package hr.algebra.javafxmonopoly.utils;
 
 import java.io.*;
-import java.util.Set;
 
 public final class SerializationUtils {
     private SerializationUtils() {

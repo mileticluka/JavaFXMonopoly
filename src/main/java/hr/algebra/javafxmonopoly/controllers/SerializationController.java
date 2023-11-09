@@ -4,7 +4,7 @@ import hr.algebra.javafxmonopoly.GameBoard;
 import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.GameStateSerializable;
 import hr.algebra.javafxmonopoly.models.Player;
-import hr.algebra.javafxmonopoly.models.SerializationUtils;
+import hr.algebra.javafxmonopoly.utils.SerializationUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;

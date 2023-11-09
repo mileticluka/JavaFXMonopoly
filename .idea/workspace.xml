@@ -8,8 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35076336-fd96-4d45-a57a-2defdea400a9" name="Changes" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/DocumentationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/DocumentationUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/algebra/javafxmonopoly/docs/documentation.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/models/GamePane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/models/GamePane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/models/SerializationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/SerializationUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +117,7 @@
       <workItem from="1699292515143" duration="3270000" />
       <workItem from="1699295802370" duration="15234000" />
       <workItem from="1699452266165" duration="1017000" />
+      <workItem from="1699488148138" duration="5543000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
