@@ -139,7 +139,10 @@ public class GameLogicController {
         for (Pane p : panes) {
             p.setDisable(true);
         }
-        player1Pane.setDisable(false);
+        if(gameStateManager.client.getClientID() <= 1 )
+        {
+            player1Pane.setDisable(false);
+        }
 
         for (Button button : rollButtons) {
             button.setOnMouseClicked(event -> handleRollButtonClick());
@@ -218,7 +221,11 @@ public class GameLogicController {
             p.setDisable(true);
         }
 
-        panes.get(currentPlayer.getId()-1).setDisable(false);
+        if(gameStateManager.client.getClientID() == currentPlayer.getId())
+        {
+            panes.get(currentPlayer.getId()-1).setDisable(false);
+        }
+
     }
 
     private void togglePlayerPanels(Player currentPlayer) {

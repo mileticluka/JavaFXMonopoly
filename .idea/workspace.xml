@@ -8,11 +8,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35076336-fd96-4d45-a57a-2defdea400a9" name="Changes" comment="initial commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/client/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/documentation.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/documentation.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/DocumentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/DocumentationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/GameStateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/GameStateManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/DocumentationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/DocumentationUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/SerializationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/SerializationUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,14 +83,100 @@
       <recent name="hr.algebra.javafxmonopoly" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="Run" type="Application" factoryName="Application">
+  <component name="RunManager" selected="Application.Run">
+    <configuration name="Client1" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="hr.algebra.javafxmonopoly.network.client.Client" />
+      <module name="JavaFXMonopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hr.algebra.javafxmonopoly.network.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client2" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="hr.algebra.javafxmonopoly.network.client.Client" />
+      <module name="JavaFXMonopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hr.algebra.javafxmonopoly.network.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client3" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="hr.algebra.javafxmonopoly.network.client.Client" />
+      <module name="JavaFXMonopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hr.algebra.javafxmonopoly.network.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client4" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="hr.algebra.javafxmonopoly.network.client.Client" />
+      <module name="JavaFXMonopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hr.algebra.javafxmonopoly.network.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Run" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="hr.algebra.javafxmonopoly.JavaFXMonopolyApplication" />
       <module name="JavaFXMonopoly" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Server" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="hr.algebra.javafxmonopoly.network.server.Server" />
+      <module name="JavaFXMonopoly" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hr.algebra.javafxmonopoly.network.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Run Server" type="CompoundRunConfigurationType">
+      <toRun name="Server" type="Application" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Run clients" type="CompoundRunConfigurationType">
+      <toRun name="Client1" type="Application" />
+      <toRun name="Client2" type="Application" />
+      <toRun name="Client3" type="Application" />
+      <toRun name="Client4" type="Application" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.Run" />
+      <item itemvalue="Application.Client1" />
+      <item itemvalue="Application.Client2" />
+      <item itemvalue="Application.Client3" />
+      <item itemvalue="Application.Client4" />
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Compound.Run clients" />
+      <item itemvalue="Compound.Run Server" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

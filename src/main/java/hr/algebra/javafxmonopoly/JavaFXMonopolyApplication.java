@@ -1,6 +1,7 @@
 package hr.algebra.javafxmonopoly;
 
 import hr.algebra.javafxmonopoly.controllers.*;
+import hr.algebra.javafxmonopoly.network.client.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ public class JavaFXMonopolyApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         GameStateManager manager = new GameStateManager();
+        manager.connectToServer();
 
         GameBoard gameBoard = new GameBoard();
         new GameBoardController(gameBoard, manager);
@@ -51,7 +53,7 @@ public class JavaFXMonopolyApplication extends Application {
         borderPane.setTop(menuBar);
 
         Scene scene = new Scene(borderPane, 1400, 900);
-        stage.setTitle("JavaFX Monopoly");
+        stage.setTitle("Client: " + String.valueOf(manager.client.getClientID()));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

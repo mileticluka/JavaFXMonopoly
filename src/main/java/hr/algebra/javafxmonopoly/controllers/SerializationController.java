@@ -66,7 +66,7 @@ public class SerializationController {
         }
         if(!file.exists())
         {
-            System.out.println("FILE DOESNT EXIST!");
+            System.out.println("FILE DOESN'T EXIST!");
             return;
         }
 
@@ -102,6 +102,20 @@ public class SerializationController {
         System.out.println("LOADED!");
 
     }
+
+    public static byte[] serialize(GameStateManager gameStateManager)
+    {
+        GameStateSerializable out = new GameStateSerializable();
+        out.setProperties(gameStateManager);
+
+        try {
+            SerializationUtils.write(gameStateSerializable,file);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("SAVED!");
+    }
+
 
 }
 

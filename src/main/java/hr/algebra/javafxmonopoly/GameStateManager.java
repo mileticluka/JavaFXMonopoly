@@ -3,12 +3,14 @@ package hr.algebra.javafxmonopoly;
 import hr.algebra.javafxmonopoly.controllers.LogPanelController;
 import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.models.Player;
+import hr.algebra.javafxmonopoly.network.client.Client;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameStateManager {
 
+    public Client client = new Client();
     private List<Player> players;
     transient private List<GamePane> gamePanes;
     private int currentPlayerIndex;
@@ -49,6 +51,11 @@ public class GameStateManager {
         currentPlayerIndex = 0;
 
         this.logs = new ArrayList<>();
+    }
+
+    public void connectToServer()
+    {
+        client.connectToServer();
     }
 
     public void setGamePanes(List<GamePane> gamePanes) {

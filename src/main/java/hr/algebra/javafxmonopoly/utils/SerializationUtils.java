@@ -19,4 +19,16 @@ public final class SerializationUtils {
         }
     }
 
+
+    public static<T extends Serializable> void write(T t, Byte[] bytes) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream();
+    }
+
+    public static<T extends Serializable> T read(Byte[] bytes) throws IOException, ClassNotFoundException {
+        try(ObjectInputStream ois = new ObjectInputStream(new DataOutputStream(file))) {
+            return (T) ois.readObject();
+        }
+    }
+
+
 }
