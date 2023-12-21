@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -189,6 +190,17 @@ public class GameLogicController {
         }
 
         togglePlayerPanels(currentPlayer);
+
+        try {
+            byte[] serializedData = SerializationController.serializeIntoBytes(this.gameStateManager);
+            this.gameStateManager.client.getCSC().getOutputStream().writeInt(serializedData.length);
+            this.gameStateManager.client.getCSC().getOutputStream().write(serializedData);
+            this.gameStateManager.client.getCSC().getOutputStream().flush();
+            System.out.println("Written to out!");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     private void handleBankrupt(Player currentPlayer) {

@@ -47,8 +47,10 @@ public class JavaFXMonopolyApplication extends Application {
 
         MenuBar menuBar = new MenuBar(serializationMenu,documentationMenu);
 
-        new SerializationController(menuBar,manager,gameLogicController,gameBoard);
+        SerializationController serializationController = new SerializationController(menuBar,manager,gameLogicController,gameBoard);
         new DocumentationController(menuBar);
+
+        manager.setSerializationController(serializationController);
 
         borderPane.setTop(menuBar);
 

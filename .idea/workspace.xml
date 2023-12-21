@@ -8,14 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35076336-fd96-4d45-a57a-2defdea400a9" name="Changes" comment="initial commit">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/client/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/GameStateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/GameStateManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/JavaFXMonopolyApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/GameLogicController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/controllers/SerializationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/network/server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/SerializationUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/algebra/javafxmonopoly/utils/SerializationUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -1,6 +1,7 @@
 package hr.algebra.javafxmonopoly;
 
 import hr.algebra.javafxmonopoly.controllers.LogPanelController;
+import hr.algebra.javafxmonopoly.controllers.SerializationController;
 import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.models.Player;
 import hr.algebra.javafxmonopoly.network.client.Client;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class GameStateManager {
 
-    public Client client = new Client();
+    public Client client = new Client(this);
     private List<Player> players;
     transient private List<GamePane> gamePanes;
     private int currentPlayerIndex;
@@ -29,6 +30,17 @@ public class GameStateManager {
 
     public void addLogger(LogPanelController logPanelController) {
         this.logger = logPanelController;
+    }
+
+    SerializationController serializationController;
+
+    public void setSerializationController(SerializationController serializationController) {
+        this.serializationController = serializationController;
+    }
+
+    public SerializationController getSerializationController()
+    {
+        return this.serializationController;
     }
 
 

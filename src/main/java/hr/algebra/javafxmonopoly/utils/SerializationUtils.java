@@ -19,16 +19,19 @@ public final class SerializationUtils {
         }
     }
 
-
-    public static<T extends Serializable> void write(T t, Byte[] bytes) throws IOException {
-        ObjectOutputStream oos = new ObjectOutputStream();
-    }
-
-    public static<T extends Serializable> T read(Byte[] bytes) throws IOException, ClassNotFoundException {
-        try(ObjectInputStream ois = new ObjectInputStream(new DataOutputStream(file))) {
-            return (T) ois.readObject();
+    public static byte[] serialize(Object obj) throws IOException {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+            oos.writeObject(obj);
+            return bos.toByteArray();
         }
     }
 
+    public static <T> T deserialize(byte[] data, Class<T> type) throws IOException, ClassNotFoundException {
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(data);
+             ObjectInputStream ois = new ObjectInputStream(bis)) {
+            return type.cast(ois.readObject());
+        }
+    }
 
 }

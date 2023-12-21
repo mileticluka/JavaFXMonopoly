@@ -6,6 +6,7 @@ import hr.algebra.javafxmonopoly.GameStateSerializable;
 import hr.algebra.javafxmonopoly.models.Player;
 import hr.algebra.javafxmonopoly.utils.SerializationUtils;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -103,17 +104,55 @@ public class SerializationController {
 
     }
 
-    public static byte[] serialize(GameStateManager gameStateManager)
+    public static byte[] serializeIntoBytes(GameStateManager gameStateManager)
     {
-        GameStateSerializable out = new GameStateSerializable();
-        out.setProperties(gameStateManager);
+        GameStateSerializable outGS = new GameStateSerializable();
+        outGS.setProperties(gameStateManager);
+
+        byte[] out;
 
         try {
-            SerializationUtils.write(gameStateSerializable,file);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            out = SerializationUtils.serialize(outGS);
+        } catch (IOException ex) {
+            out = new byte[0];
+            ex.printStackTrace();
         }
-        System.out.println("SAVED!");
+
+        System.out.println("Serialized!");
+        return out;
+    }
+
+
+    public void deserializeAndLoad(byte[] bytes)
+    {
+        for(Player p : this.gameStateManager.getPlayers())
+        {
+            this.gameStateManager.getGamePanes().get(p.getPosition()).erasePlayer(p.getId());
+        }
+
+        try {
+            gameStateSerializable = SerializationUtils.deserialize(bytes, GameStateSerializable.class);
+            gameStateManager.setProperties(gameStateSerializable);
+        } catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+        gameStateManager.logger.setLogs(gameStateManager.getLogs());
+
+        gameLogicController.setPlayerPanelsDirectly(gameStateManager.getCurrentPlayer());
+
+        for(Player p : gameStateManager.getPlayers())
+        {
+            gameStateManager.getGamePanes().get(p.getPosition()).drawPlayer(p.getId());
+            p.loadDeeds(gameStateManager.getGamePanes());
+            gameLogicController.updateDeedList(p);
+        }
+        gameLogicController.updateMoneyLabels();
+
+        System.out.println(gameStateManager);
+
+        System.out.println("LOADED!");
     }
 
 

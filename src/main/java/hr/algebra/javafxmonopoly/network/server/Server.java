@@ -1,6 +1,7 @@
 package hr.algebra.javafxmonopoly.network.server;
 
 import hr.algebra.javafxmonopoly.GameStateManager;
+import hr.algebra.javafxmonopoly.controllers.SerializationController;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -64,15 +65,13 @@ public class Server {
         private DataOutputStream outputStream;
         private int playerID;
 
-        public ServerSideConnecton(Socket socket, int playerID)
-        {
+        public ServerSideConnecton(Socket socket, int playerID) {
             this.socket = socket;
             this.playerID = playerID;
             try {
                 inputStream = new DataInputStream(socket.getInputStream());
                 outputStream = new DataOutputStream(socket.getOutputStream());
-            }catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
@@ -81,16 +80,33 @@ public class Server {
             try {
                 outputStream.writeInt(playerID);
                 outputStream.flush();
-                while (true)
-                {
-                    inputStream.read();
+
+                while (true) {
+                    int dataSize = inputStream.readInt();
+                    byte[] data = new byte[dataSize];
+
+                    int bytesRead = 0;
+                    while (bytesRead < dataSize) {
+                        bytesRead += inputStream.read(data, bytesRead, dataSize - bytesRead);
+                    }
+
+                    System.out.println("Received data from player " + playerID + ": " + new String(data));
+
+                    for (ServerSideConnecton clientConnection : clientConnections.values()) {
+                        if (clientConnection != this) {
+
+                            clientConnection.outputStream.writeInt(dataSize);
+                            clientConnection.outputStream.flush();
+
+                            clientConnection.outputStream.write(data);
+                            clientConnection.outputStream.flush();
+                        }
+                    }
                 }
-            }catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
-
     }
 
     public static void main(String[] args)
