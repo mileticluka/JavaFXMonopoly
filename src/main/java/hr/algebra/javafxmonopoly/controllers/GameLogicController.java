@@ -262,8 +262,6 @@ public class GameLogicController {
                 break;
             }
         }
-
-        panes.get(gameStateManager.getCurrentPlayerTurn()).setDisable(false);
     }
 
     private void toggleBuyButton(Player currentPlayer, GamePane newGamePane) {
@@ -349,6 +347,16 @@ public class GameLogicController {
         buyButtons.get(currentPlayer.getId() - 1).setDisable(true);
 
         updateMoneyLabels();
+
+        try {
+            byte[] serializedData = SerializationController.serializeIntoBytes(this.gameStateManager);
+            this.gameStateManager.client.getCSC().getOutputStream().writeInt(serializedData.length);
+            this.gameStateManager.client.getCSC().getOutputStream().write(serializedData);
+            this.gameStateManager.client.getCSC().getOutputStream().flush();
+            System.out.println("Written to out!");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
     }
 

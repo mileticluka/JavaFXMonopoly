@@ -35,6 +35,7 @@ public class JavaFXMonopolyApplication extends Application {
         LogPanelController logPanelController = new LogPanelController();
         fxmlLoader1.setController(logPanelController);
         borderPane.setBottom(fxmlLoader1.load());
+        logPanelController.init();
 
         manager.addLogger(logPanelController);
 

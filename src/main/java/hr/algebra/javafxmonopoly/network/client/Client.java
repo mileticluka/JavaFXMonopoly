@@ -2,13 +2,21 @@ package hr.algebra.javafxmonopoly.network.client;
 
 import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.JavaFXMonopolyApplication;
+import hr.algebra.javafxmonopoly.network.RMIChat.ChatService;
+import hr.algebra.javafxmonopoly.network.RMIChat.ChatServiceImpl;
 import hr.algebra.javafxmonopoly.network.server.Server;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.io.DataOutputStream;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 
 public class Client {
@@ -22,6 +30,8 @@ public class Client {
     }
 
     private byte[] currentData;
+
+    public static ChatService chatService;
 
     public byte[] getCurrentData()
     {
@@ -88,6 +98,17 @@ public class Client {
     }
 
     public void connectToServer() {
+
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            chatService = (ChatService) registry.lookup("ChatService");
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (NotBoundException e) {
+            throw new RuntimeException(e);
+        }
+
         clientSideConnection = new ClientSideConnection();
+
     }
 }

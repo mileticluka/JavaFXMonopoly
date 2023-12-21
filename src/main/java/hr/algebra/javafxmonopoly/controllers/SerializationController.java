@@ -140,7 +140,10 @@ public class SerializationController {
 
         gameStateManager.logger.setLogs(gameStateManager.getLogs());
 
-        gameLogicController.setPlayerPanelsDirectly(gameStateManager.getCurrentPlayer());
+        if(gameStateManager.client.getClientID() == gameStateManager.client.getClientID())
+        {
+            gameLogicController.setPlayerPanelsDirectly(gameStateManager.getCurrentPlayer());
+        }
 
         for(Player p : gameStateManager.getPlayers())
         {
