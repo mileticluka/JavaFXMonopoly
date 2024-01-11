@@ -2,6 +2,7 @@ module hr.algebra.javafxmonopoly {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.rmi;
+    requires java.xml;
 
     exports hr.algebra.javafxmonopoly.network.RMIChat;
     opens hr.algebra.javafxmonopoly to javafx.fxml;

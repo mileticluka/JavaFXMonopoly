@@ -31,15 +31,18 @@ public class LogPanelController {
     @FXML
     transient private TextField chatEntry;
 
-    public void init() {
+
+    public void init(int playerNumber) {
         chatEntry.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            private final int clientNum = playerNumber;
+
             @Override
             public void handle(KeyEvent keyEvent) {
                 if (chatEntry.getText().isEmpty()) return;
 
                 if (keyEvent.getCode() == KeyCode.ENTER) {
                     try {
-                        Client.chatService.sendMessage(chatEntry.getText());
+                        Client.chatService.sendMessage("Player " + this.clientNum + ": "+ chatEntry.getText());
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -62,16 +65,12 @@ public class LogPanelController {
 
             for (String s : Client.chatService.getMessages()) {
                 chatList.getItems().add(new Text(s));
+                chatList.scrollTo(chatList.getItems().size());
             }
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
 
     public void addLog(String str, List<String> logs) {
         logs.add(str);

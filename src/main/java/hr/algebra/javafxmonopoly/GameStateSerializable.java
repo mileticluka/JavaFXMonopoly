@@ -12,7 +12,6 @@ public class GameStateSerializable implements Serializable {
     public int currentPlayerIndex;
 
     public List<String> logs;
-    public LogPanelController logger;
 
     public void setProperties(GameStateManager gameStateManager)
     {

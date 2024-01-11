@@ -11,7 +11,7 @@ public class Player implements Serializable {
     private int position;
 
     transient List<PropertyPane> deeds;
-    List<Integer> deedIndices;
+    public List<Integer> deedIndices;
 
     public boolean playing;
 
@@ -22,6 +22,10 @@ public class Player implements Serializable {
         this.deeds = new CopyOnWriteArrayList<>();
         this.deedIndices = new CopyOnWriteArrayList<>();
         this.playing = true;
+    }
+
+    public void addTitleDeedWithoutIndex(PropertyPane propertyPane){
+        this.deeds.add(propertyPane);
     }
 
     public void addTitleDeed(PropertyPane propertyPane) {
@@ -55,8 +59,6 @@ public class Player implements Serializable {
         {
             ((PropertyPane) allPanes.get(id)).setOwnerDirectly(this);
         }
-
-
     }
 
     public int getMoney() {

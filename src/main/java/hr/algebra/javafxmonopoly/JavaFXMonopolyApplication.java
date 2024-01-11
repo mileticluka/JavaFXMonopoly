@@ -35,13 +35,15 @@ public class JavaFXMonopolyApplication extends Application {
         LogPanelController logPanelController = new LogPanelController();
         fxmlLoader1.setController(logPanelController);
         borderPane.setBottom(fxmlLoader1.load());
-        logPanelController.init();
+        logPanelController.init(manager.client.getClientID());
 
         manager.addLogger(logPanelController);
 
         Menu serializationMenu = new Menu("Serialization");
         serializationMenu.getItems().add(new MenuItem("Save Game State"));
         serializationMenu.getItems().add(new MenuItem("Load Game State"));
+        serializationMenu.getItems().add(new MenuItem("Save Replay"));
+        serializationMenu.getItems().add(new MenuItem("View Replay"));
 
         Menu documentationMenu = new Menu("Documentation");
         documentationMenu.getItems().add(new MenuItem("Create Documentation"));

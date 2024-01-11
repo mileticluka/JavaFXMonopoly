@@ -5,6 +5,7 @@ import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.GameStateSerializable;
 import hr.algebra.javafxmonopoly.models.Player;
 import hr.algebra.javafxmonopoly.utils.SerializationUtils;
+import hr.algebra.javafxmonopoly.utils.XMLUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
@@ -32,6 +33,69 @@ public class SerializationController {
 
         menuBar.getMenus().get(0).getItems().get(0).setOnAction(this::handleSaveButtonClick);
         menuBar.getMenus().get(0).getItems().get(1).setOnAction(this::handleLoadButtonClick);
+
+        menuBar.getMenus().get(0).getItems().get(2).setOnAction(this::handleSaveReplayButtonClick);
+        menuBar.getMenus().get(0).getItems().get(3).setOnAction(this::handleLoadReplayButtonClick);
+
+
+    }
+
+    private void handleLoadReplayButtonClick(ActionEvent actionEvent) {
+
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if(file == null)
+        {
+            System.out.println("NO FILE SELECTED!");
+            return;
+        }
+        if(!file.exists())
+        {
+            System.out.println("FILE DOESN'T EXIST!");
+            return;
+        }
+
+        for(Player p : this.gameStateManager.getPlayers())
+        {
+            this.gameStateManager.getGamePanes().get(p.getPosition()).erasePlayer(p.getId());
+        }
+
+        try {
+            gameStateSerializable = XMLUtils.loadFromFile(file.getPath());
+            this.gameStateManager.setProperties(gameStateSerializable);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        gameStateManager.logger.setLogs(gameStateManager.getLogs());
+
+
+        gameLogicController.setPlayerPanelsDirectly(gameStateManager.getCurrentPlayer());
+
+        for(Player p : gameStateManager.getPlayers())
+        {
+            gameStateManager.getGamePanes().get(p.getPosition()).drawPlayer(p.getId());
+            p.loadDeeds(gameStateManager.getGamePanes());
+            gameLogicController.updateDeedList(p);
+
+
+        }
+        gameLogicController.updateMoneyLabels();
+
+        System.out.println(gameStateManager);
+
+        System.out.println("Loaded Replay!");
+    }
+
+    private void handleSaveReplayButtonClick(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showSaveDialog(new Stage());
+
+        this.gameStateSerializable.setProperties(gameStateManager);
+
+        XMLUtils.saveToFile(this.gameStateSerializable,file.getPath());
+        System.out.println("Saved Replay");
     }
 
     private void handleSaveButtonClick(ActionEvent evt) {

@@ -30,7 +30,7 @@ public class PropertyPane extends GamePane{
     public void setOwnerDirectly(Player p)
     {
         this.owner = p;
-        p.addTitleDeed(this);
+        p.addTitleDeedWithoutIndex(this);
         this.priceLabel.setText("Owned By: Player " + p.getId());
         this.bought = true;
     }
