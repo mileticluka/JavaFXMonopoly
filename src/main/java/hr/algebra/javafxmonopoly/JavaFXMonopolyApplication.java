@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -48,7 +49,11 @@ public class JavaFXMonopolyApplication extends Application {
         Menu documentationMenu = new Menu("Documentation");
         documentationMenu.getItems().add(new MenuItem("Create Documentation"));
 
-        MenuBar menuBar = new MenuBar(serializationMenu,documentationMenu);
+        Menu replayMenu = new Menu("Replay");
+        replayMenu.getItems().add(new MenuItem(">>"));
+        replayMenu.getItems().add(new MenuItem("<<"));
+
+        MenuBar menuBar = new MenuBar(serializationMenu,documentationMenu,replayMenu);
 
         SerializationController serializationController = new SerializationController(menuBar,manager,gameLogicController,gameBoard);
         new DocumentationController(menuBar);

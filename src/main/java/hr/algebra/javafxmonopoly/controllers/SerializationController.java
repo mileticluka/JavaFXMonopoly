@@ -7,6 +7,7 @@ import hr.algebra.javafxmonopoly.models.Player;
 import hr.algebra.javafxmonopoly.utils.SerializationUtils;
 import hr.algebra.javafxmonopoly.utils.XMLUtils;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
@@ -14,6 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.SimpleTimeZone;
 
 public class SerializationController {
 
@@ -37,7 +40,64 @@ public class SerializationController {
         menuBar.getMenus().get(0).getItems().get(2).setOnAction(this::handleSaveReplayButtonClick);
         menuBar.getMenus().get(0).getItems().get(3).setOnAction(this::handleLoadReplayButtonClick);
 
+        menuBar.getMenus().get(2).getItems().get(0).setOnAction(this::handleForwardButtonClick);
+        menuBar.getMenus().get(2).getItems().get(1).setOnAction(this::handleBackwardsButtonClick);
+    }
 
+    private void handleBackwardsButtonClick(ActionEvent actionEvent) {
+        System.out.println("backward");
+        System.out.println("index:" + this.gameStateManager.historyIndex);
+        System.out.println("size:" + this.gameStateManager.history.size());
+
+        if(this.gameStateManager.historyIndex == 0) {
+            System.out.println("Cant go back further");
+            return;
+        }
+
+        this.gameStateManager.historyIndex --;
+        setUI();
+    }
+
+    private void handleForwardButtonClick(ActionEvent actionEvent) {
+
+        System.out.println("forward");
+
+        System.out.println(this.gameStateManager.historyIndex);
+        System.out.println(this.gameStateManager.history.size());
+
+        if(this.gameStateManager.historyIndex == this.gameStateManager.history.size()-1) {
+            System.out.println("Cant go forward further");
+            return;
+        }
+
+        this.gameStateManager.historyIndex ++;
+        setUI();
+
+    }
+
+    private void setUI()
+    {
+        for(Player p : this.gameStateManager.getPlayers())
+        {
+            this.gameStateManager.getGamePanes().get(p.getPosition()).erasePlayer(p.getId());
+        }
+
+        this.gameStateManager.setProperties(this.gameStateManager.history.get(gameStateManager.historyIndex));
+
+        gameStateManager.logger.setLogs(gameStateManager.getLogs());
+
+        gameLogicController.setPlayerPanelsDirectly(gameStateManager.getCurrentPlayer());
+
+        for(Player p : gameStateManager.getPlayers())
+        {
+            gameStateManager.getGamePanes().get(p.getPosition()).drawPlayer(p.getId());
+            p.loadDeeds(gameStateManager.getGamePanes());
+            gameLogicController.updateDeedList(p);
+
+        }
+        gameLogicController.updateMoneyLabels();
+
+        System.out.println("Loaded Replay!");
     }
 
     private void handleLoadReplayButtonClick(ActionEvent actionEvent) {
@@ -62,8 +122,9 @@ public class SerializationController {
         }
 
         try {
-            gameStateSerializable = XMLUtils.loadFromFile(file.getPath());
-            this.gameStateManager.setProperties(gameStateSerializable);
+            this.gameStateManager.history = XMLUtils.loadFromFile(file.getPath());
+            this.gameStateManager.setProperties(this.gameStateManager.history.getLast());
+            this.gameStateManager.historyIndex = this.gameStateManager.history.size()-1;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -79,11 +140,18 @@ public class SerializationController {
             p.loadDeeds(gameStateManager.getGamePanes());
             gameLogicController.updateDeedList(p);
 
-
         }
         gameLogicController.updateMoneyLabels();
 
-        System.out.println(gameStateManager);
+        try {
+            byte[] serializedData = SerializationController.serializeIntoBytes(this.gameStateManager);
+            this.gameStateManager.client.getCSC().getOutputStream().writeInt(serializedData.length);
+            this.gameStateManager.client.getCSC().getOutputStream().write(serializedData);
+            this.gameStateManager.client.getCSC().getOutputStream().flush();
+            System.out.println("Written to out!");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
         System.out.println("Loaded Replay!");
     }
@@ -92,9 +160,7 @@ public class SerializationController {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showSaveDialog(new Stage());
 
-        this.gameStateSerializable.setProperties(gameStateManager);
-
-        XMLUtils.saveToFile(this.gameStateSerializable,file.getPath());
+        XMLUtils.saveToFile(this.gameStateManager.history,file.getPath());
         System.out.println("Saved Replay");
     }
 
@@ -157,8 +223,6 @@ public class SerializationController {
             gameStateManager.getGamePanes().get(p.getPosition()).drawPlayer(p.getId());
             p.loadDeeds(gameStateManager.getGamePanes());
             gameLogicController.updateDeedList(p);
-
-
         }
         gameLogicController.updateMoneyLabels();
 
@@ -170,13 +234,17 @@ public class SerializationController {
 
     public static byte[] serializeIntoBytes(GameStateManager gameStateManager)
     {
-        GameStateSerializable outGS = new GameStateSerializable();
-        outGS.setProperties(gameStateManager);
+        GameStateSerializable gst = new GameStateSerializable();
+        gst.setProperties(gameStateManager);
+        gameStateManager.history.add(gst);
+        gameStateManager.historyIndex ++;
+
+        gst.setProperties(gameStateManager);
 
         byte[] out;
 
         try {
-            out = SerializationUtils.serialize(outGS);
+            out = SerializationUtils.serialize(gst);
         } catch (IOException ex) {
             out = new byte[0];
             ex.printStackTrace();
@@ -218,6 +286,11 @@ public class SerializationController {
         gameLogicController.updateMoneyLabels();
 
         System.out.println(gameStateManager);
+
+        GameStateSerializable gst = new GameStateSerializable();
+        gst.setProperties(this.gameStateManager);
+        this.gameStateManager.history.add(gst);
+        gameStateManager.historyIndex ++;
 
         System.out.println("LOADED!");
     }

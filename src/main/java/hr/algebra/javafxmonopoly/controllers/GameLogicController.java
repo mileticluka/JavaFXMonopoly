@@ -1,5 +1,6 @@
 package hr.algebra.javafxmonopoly.controllers;
 
+import hr.algebra.javafxmonopoly.GameStateSerializable;
 import hr.algebra.javafxmonopoly.models.GamePane;
 import hr.algebra.javafxmonopoly.GameStateManager;
 import hr.algebra.javafxmonopoly.models.MiscPane;
@@ -18,7 +19,6 @@ import java.util.Random;
 public class GameLogicController {
 
     private final GameStateManager gameStateManager;
-
 
 
     //region UI Elements Declarations...
@@ -98,7 +98,6 @@ public class GameLogicController {
 
     //endregion
 
-
     public GameLogicController(GameStateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
     }
@@ -154,11 +153,13 @@ public class GameLogicController {
             button.setDisable(true);
         }
 
+        GameStateSerializable gss = new GameStateSerializable();
+        gss.setProperties(this.gameStateManager);
+
         updateMoneyLabels();
     }
 
     private void handleRollButtonClick() {
-
 
         int diceRoll = rollDice();
         Player currentPlayer = gameStateManager.getPlayers().get(gameStateManager.getCurrentPlayerTurn());
@@ -191,6 +192,11 @@ public class GameLogicController {
 
         togglePlayerPanels(currentPlayer);
 
+        GameStateSerializable gst = new GameStateSerializable();
+        gst.setProperties(gameStateManager);
+        gameStateManager.history.add(gst);
+        gameStateManager.historyIndex ++;
+
         try {
             byte[] serializedData = SerializationController.serializeIntoBytes(this.gameStateManager);
             this.gameStateManager.client.getCSC().getOutputStream().writeInt(serializedData.length);
@@ -200,7 +206,6 @@ public class GameLogicController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
     private void handleBankrupt(Player currentPlayer) {

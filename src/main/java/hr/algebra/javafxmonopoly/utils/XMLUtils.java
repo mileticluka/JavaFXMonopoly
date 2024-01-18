@@ -13,12 +13,14 @@ import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class XMLUtils {
 
-    public static void saveToFile(GameStateSerializable gameStateSerializable, String filePath) {
-        String xmlString = serializeToXml(gameStateSerializable);
+    public static void saveToFile(List<GameStateSerializable> gameStates, String filePath) {
+        String xmlString = serializeToXml(gameStates);
         try (Writer writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(xmlString);
         } catch (IOException e) {
@@ -26,7 +28,7 @@ public class XMLUtils {
         }
     }
 
-    public static GameStateSerializable loadFromFile(String filePath) {
+    public static List<GameStateSerializable> loadFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             StringBuilder xmlStringBuilder = new StringBuilder();
             String line;
@@ -41,52 +43,57 @@ public class XMLUtils {
         }
     }
 
-    private static String serializeToXml(GameStateSerializable gameStateSerializable) {
+    private static String serializeToXml(List<GameStateSerializable> gameStates) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.newDocument();
 
             // Root element
-            Element rootElement = document.createElement("GameStateSerializable");
+            Element rootElement = document.createElement("GameStates");
             document.appendChild(rootElement);
 
-            // Players
-            Element playersElement = document.createElement("Players");
-            rootElement.appendChild(playersElement);
+            for (GameStateSerializable gameState : gameStates) {
+                Element gameStateElement = document.createElement("GameStateSerializable");
+                rootElement.appendChild(gameStateElement);
 
-            for (Player player : gameStateSerializable.players) {
-                Element playerElement = document.createElement("Player");
-                playerElement.setAttribute("id", Integer.toString(player.getId()));
-                playerElement.setAttribute("money", Integer.toString(player.getMoney()));
-                playerElement.setAttribute("position", Integer.toString(player.getPosition()));
-                playerElement.setAttribute("playing", Boolean.toString(player.playing));
+                // Players
+                Element playersElement = document.createElement("Players");
+                gameStateElement.appendChild(playersElement);
 
-                // Serialize deedIndices
-                Element deedIndicesElement = document.createElement("DeedIndices");
-                for (Integer deedIndex : player.deedIndices) {
-                    Element deedIndexElement = document.createElement("DeedIndex");
-                    deedIndexElement.appendChild(document.createTextNode(deedIndex.toString()));
-                    deedIndicesElement.appendChild(deedIndexElement);
+                for (Player player : gameState.players) {
+                    Element playerElement = document.createElement("Player");
+                    playerElement.setAttribute("id", Integer.toString(player.getId()));
+                    playerElement.setAttribute("money", Integer.toString(player.getMoney()));
+                    playerElement.setAttribute("position", Integer.toString(player.getPosition()));
+                    playerElement.setAttribute("playing", Boolean.toString(player.playing));
+
+                    // Serialize deedIndices
+                    Element deedIndicesElement = document.createElement("DeedIndices");
+                    for (Integer deedIndex : player.deedIndices) {
+                        Element deedIndexElement = document.createElement("DeedIndex");
+                        deedIndexElement.appendChild(document.createTextNode(deedIndex.toString()));
+                        deedIndicesElement.appendChild(deedIndexElement);
+                    }
+                    playerElement.appendChild(deedIndicesElement);
+
+                    playersElement.appendChild(playerElement);
                 }
-                playerElement.appendChild(deedIndicesElement);
 
-                playersElement.appendChild(playerElement);
-            }
+                // CurrentPlayerIndex
+                Element currentPlayerIndexElement = document.createElement("CurrentPlayerIndex");
+                currentPlayerIndexElement.appendChild(document.createTextNode(Integer.toString(gameState.currentPlayerIndex)));
+                gameStateElement.appendChild(currentPlayerIndexElement);
 
-            // CurrentPlayerIndex
-            Element currentPlayerIndexElement = document.createElement("CurrentPlayerIndex");
-            currentPlayerIndexElement.appendChild(document.createTextNode(Integer.toString(gameStateSerializable.currentPlayerIndex)));
-            rootElement.appendChild(currentPlayerIndexElement);
+                // Logs
+                Element logsElement = document.createElement("Logs");
+                gameStateElement.appendChild(logsElement);
 
-            // Logs
-            Element logsElement = document.createElement("Logs");
-            rootElement.appendChild(logsElement);
-
-            for (String log : gameStateSerializable.logs) {
-                Element logElement = document.createElement("Log");
-                logElement.appendChild(document.createTextNode(log));
-                logsElement.appendChild(logElement);
+                for (String log : gameState.logs) {
+                    Element logElement = document.createElement("Log");
+                    logElement.appendChild(document.createTextNode(log));
+                    logsElement.appendChild(logElement);
+                }
             }
 
             // Transform the document to a string
@@ -105,55 +112,63 @@ public class XMLUtils {
         }
     }
 
-    private static GameStateSerializable deserializeFromXml(String xml) {
+    private static List<GameStateSerializable> deserializeFromXml(String xml) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             InputSource inputSource = new InputSource(new StringReader(xml));
             Document document = documentBuilder.parse(inputSource);
 
-            GameStateSerializable gameStateSerializable = new GameStateSerializable();
-            gameStateSerializable.players = new java.util.ArrayList<>();
+            List<GameStateSerializable> gameStates = new ArrayList<>();
 
-            // Players
-            NodeList playerNodes = document.getElementsByTagName("Player");
+            NodeList gameStateNodes = document.getElementsByTagName("GameStateSerializable");
+            for (int i = 0; i < gameStateNodes.getLength(); i++) {
+                Element gameStateElement = (Element) gameStateNodes.item(i);
+                GameStateSerializable gameState = new GameStateSerializable();
+                gameState.players = new ArrayList<>();
 
-            for (int i = 0; i < playerNodes.getLength(); i++) {
-                Element playerElement = (Element) playerNodes.item(i);
-                Player player = new Player(
-                        Integer.parseInt(playerElement.getAttribute("id")),
-                        Integer.parseInt(playerElement.getAttribute("money"))
-                );
+                // Players
+                NodeList playerNodes = gameStateElement.getElementsByTagName("Player");
 
-                player.setPosition(Integer.parseInt(playerElement.getAttribute("position")));
-                player.playing = Boolean.parseBoolean(playerElement.getAttribute("playing"));
+                for (int j = 0; j < playerNodes.getLength(); j++) {
+                    Element playerElement = (Element) playerNodes.item(j);
+                    Player player = new Player(
+                            Integer.parseInt(playerElement.getAttribute("id")),
+                            Integer.parseInt(playerElement.getAttribute("money"))
+                    );
 
-                // Deserialize deedIndices
-                NodeList deedIndicesNodes = playerElement.getElementsByTagName("DeedIndex");
-                player.deedIndices = new CopyOnWriteArrayList<>();
-                for (int j = 0; j < deedIndicesNodes.getLength(); j++) {
-                    Element deedIndexElement = (Element) deedIndicesNodes.item(j);
-                    player.deedIndices.add(Integer.parseInt(deedIndexElement.getTextContent()));
+                    player.setPosition(Integer.parseInt(playerElement.getAttribute("position")));
+                    player.playing = Boolean.parseBoolean(playerElement.getAttribute("playing"));
+
+                    // Deserialize deedIndices
+                    NodeList deedIndicesNodes = playerElement.getElementsByTagName("DeedIndex");
+                    player.deedIndices = new CopyOnWriteArrayList<>();
+                    for (int k = 0; k < deedIndicesNodes.getLength(); k++) {
+                        Element deedIndexElement = (Element) deedIndicesNodes.item(k);
+                        player.deedIndices.add(Integer.parseInt(deedIndexElement.getTextContent()));
+                    }
+
+                    gameState.players.add(player);
                 }
 
-                gameStateSerializable.players.add(player);
+                // CurrentPlayerIndex
+                NodeList currentPlayerIndexNodes = gameStateElement.getElementsByTagName("CurrentPlayerIndex");
+                Element currentPlayerIndexElement = (Element) currentPlayerIndexNodes.item(0);
+                gameState.currentPlayerIndex = Integer.parseInt(currentPlayerIndexElement.getTextContent());
+
+                // Logs
+                NodeList logNodes = gameStateElement.getElementsByTagName("Log");
+                gameState.logs = new ArrayList<>();
+
+                for (int j = 0; j < logNodes.getLength(); j++) {
+                    Element logElement = (Element) logNodes.item(j);
+                    gameState.logs.add(logElement.getTextContent());
+                }
+
+                gameStates.add(gameState);
             }
 
-            // CurrentPlayerIndex
-            NodeList currentPlayerIndexNodes = document.getElementsByTagName("CurrentPlayerIndex");
-            Element currentPlayerIndexElement = (Element) currentPlayerIndexNodes.item(0);
-            gameStateSerializable.currentPlayerIndex = Integer.parseInt(currentPlayerIndexElement.getTextContent());
-
-            // Logs
-            NodeList logNodes = document.getElementsByTagName("Log");
-            gameStateSerializable.logs = new java.util.ArrayList<>();
-
-            for (int i = 0; i < logNodes.getLength(); i++) {
-                Element logElement = (Element) logNodes.item(i);
-                gameStateSerializable.logs.add(logElement.getTextContent());
-            }
-
-            return gameStateSerializable;
+            return gameStates;
 
         } catch (ParserConfigurationException | IOException | org.xml.sax.SAXException e) {
             e.printStackTrace();

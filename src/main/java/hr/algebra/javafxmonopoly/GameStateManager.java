@@ -17,6 +17,9 @@ public class GameStateManager {
     private int currentPlayerIndex;
     transient public LogPanelController logger;
 
+    public List<GameStateSerializable> history = new ArrayList<GameStateSerializable>();
+    public int historyIndex;
+
     private List<String> logs;
 
     public List<String> getLogs()
@@ -46,7 +49,7 @@ public class GameStateManager {
 
     public void setProperties(GameStateSerializable gameStateSerializable)
     {
-        this.players = gameStateSerializable.players;
+        this.players = new ArrayList<Player>(gameStateSerializable.players);
         this.currentPlayerIndex = gameStateSerializable.currentPlayerIndex;
         this.logs = gameStateSerializable.logs;
     }
